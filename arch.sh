@@ -167,6 +167,9 @@ git clone https://github.com/LazyVim/starter ~/.config/nvim
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles && stow . && cd
 
+# adding crontab
+echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
+
 # installing oh-my-zsh with plugins
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
