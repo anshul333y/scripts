@@ -126,6 +126,10 @@ user_pass=your_user_password
 echo "root:$root_pass" | chpasswd
 echo "$username:$user_pass" | chpasswd
 
+# configure reflector
+sed -i "s/5/30/" /etc/xdg/reflector/reflector.conf
+sed -i "s/age/rate/" /etc/xdg/reflector/reflector.conf
+
 # run third stage of installer as user
 arch3_path=/home/$username/arch3.sh
 sed '1,/^#part3$/d' arch2.sh >$arch3_path
