@@ -89,7 +89,7 @@ sed -i 's/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/defa
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # installing pacman packages
-pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow unzip \
+pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip \
   noto-fonts noto-fonts-cjk noto-fonts-emoji \
   hyprland hyprpaper hypridle hyprlock rofi-wayland waybar dunst polkit-gnome gnome-keyring \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
@@ -178,7 +178,7 @@ git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM
 
 # installing font
 curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/download/v7.4/MapleMono-NF-CN-unhinted.zip"
-unzip ~/dl/font.zip -d ~/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font.zip
+7z x ~/dl/font.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font.zip
 
 # installing aur helper paru
 git clone https://aur.archlinux.org/paru-bin.git ~/dl/paru
