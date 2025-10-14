@@ -16,25 +16,25 @@ loadkeys us
 timedatectl set-ntp true
 
 # partition, format and mount partitions
-efi=/dev/nvme0n1p1
+boot=/dev/nvme0n1p1
 root=/dev/nvme0n1p2
 home=/dev/nvme0n1p3
 swap=/dev/nvme0n1p4
 
-mkfs.fat -F 32 -n boot $efi
+mkfs.fat -F 32 -n boot $boot
 mkfs.ext4 -F -L arch $root
 mkfs.ext4 -F -L anshul333y $home
 mkswap -L swap $swap
 
 mount $root /mnt
-mkdir -p /mnt/boot/efi
+mkdir -p /mnt/boot
 mkdir -p /mnt/home
-mount $efi /mnt/boot/efi
+mount $boot /mnt/boot
 mount $home /mnt/home
 swapon $swap
 
 # install base system
-pacstrap -K /mnt base base-devel linux linux-firmware intel-ucode \
+pacstrap -K /mnt base base-devel linux linux-firmware intel-ucode grub efibootmgr os-prober \
   networkmanager dhcpcd bluez bluez-utils pipewire pipewire-pulse
 
 # generate fstab
@@ -80,8 +80,7 @@ echo "127.0.1.1       $hostname.localdomain $hostname" >>/etc/hosts
 mkinitcpio -P
 
 # install and configure grub with custom boot params
-pacman --noconfirm -S grub efibootmgr os-prober
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 sed -i 's/GRUB_DEFAULT=0/GRUB_DEFAULT=saved/' /etc/default/grub
 sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/' /etc/default/grub
 sed -i 's/quiet/pci=noaer/' /etc/default/grub
