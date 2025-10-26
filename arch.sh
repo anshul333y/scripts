@@ -49,9 +49,12 @@ exit
 #part2
 printf '\033c'
 
-# configure pacman
+# configure pacman and mkinitcpio and AllowSuspendThenHibernate
 sed -i "s/ParallelDownloads = 5/ParallelDownloads = 15/" /etc/pacman.conf
 sed -i "s/#Color/Color/" /etc/pacman.conf
+sed -i "s/filesystems/filesystems resume/" /etc/mkinitcpio.conf
+sed -i "s/#HibernateDelaySec=/HibernateDelaySec=20min/" /etc/systemd/sleep.conf
+sed -i "s/#AllowSuspendThenHibernate=yes/AllowSuspendThenHibernate=yes/" /etc/systemd/sleep.conf
 
 # set system timezone
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
