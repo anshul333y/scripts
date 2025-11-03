@@ -188,7 +188,7 @@ git clone https://aur.archlinux.org/paru-bin.git ~/dl/paru
 cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
 
 # installing aur packages
-paru -S --noconfirm hyprshot-git wlogout python-pywalfox brave-bin google-chrome visual-studio-code-bin
+paru -S --noconfirm hyprshot-git wlogout brave-bin google-chrome visual-studio-code-bin
 
 # post install steps
 rm .bash* .zshrc
