@@ -93,7 +93,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 # installing pacman packages
 pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip \
-  noto-fonts noto-fonts-cjk noto-fonts-emoji \
+  noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra easyeffects calf mda.lv2 lsp-plugins-lv2 zam-plugins-lv2 \
   hyprland hyprpaper hypridle hyprlock rofi-wayland waybar dunst polkit-gnome gnome-keyring \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
   uwsm brightnessctl acpi pacman-contrib python-pywal xdg-user-dirs \
@@ -101,7 +101,6 @@ pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip \
   firefox flatpak kitty wl-clipboard nvim lazygit fzf ripgrep fd tmux nodejs npm docker
 
 # installing flatpak packages
-flatpak install --noninteractive flathub com.github.wwmm.easyeffects
 flatpak install --noninteractive flathub org.telegram.desktop
 flatpak install --noninteractive flathub com.discordapp.Discord
 
