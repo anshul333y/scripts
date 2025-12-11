@@ -101,8 +101,8 @@ pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip \
   firefox speech-dispatcher flatpak kitty wl-clipboard nvim lazygit fzf ripgrep fd tmux nodejs npm docker
 
 # installing flatpak packages
-flatpak install --noninteractive flathub org.telegram.desktop
-flatpak install --noninteractive flathub com.discordapp.Discord
+flatpak install -y flathub org.telegram.desktop
+flatpak install -y flathub com.discordapp.Discord
 
 # enabling systemd services
 systemctl enable NetworkManager.service
@@ -166,7 +166,7 @@ git clone https://github.com/LazyVim/starter ~/.config/nvim
 
 # installing dotfiles
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
-cd ~/.dotfiles && stow . && cd
+cd ~/.dotfiles && stow --adopt . && cd
 
 # adding crontab
 echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -

@@ -17,9 +17,9 @@ sudo apt install -y cronie curl zsh git stow unzip \
 
 # installing flatpak packages
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install --noninteractive flathub com.github.wwmm.easyeffects
-flatpak install --noninteractive flathub org.telegram.desktop
-flatpak install --noninteractive flathub com.discordapp.Discord
+flatpak install -y flathub com.github.wwmm.easyeffects
+flatpak install -y flathub org.telegram.desktop
+flatpak install -y flathub com.discordapp.Discord
 
 # enabling systemd services
 sudo systemctl enable cronie.service
@@ -37,7 +37,7 @@ git clone https://github.com/LazyVim/starter ~/.config/nvim
 
 # installing dotfiles
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
-cd ~/.dotfiles && stow . && cd
+cd ~/.dotfiles && stow --adopt . && cd
 
 # loading dconf
 dconf load / <~/.config/gnome.dconf
