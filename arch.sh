@@ -97,8 +97,9 @@ pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip \
   hyprland hyprpaper hypridle hyprlock rofi-wayland waybar dunst polkit-gnome gnome-keyring \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
   uwsm brightnessctl acpi pacman-contrib python-pywal xdg-user-dirs \
-  yazi poppler mpv yt-dlp mpd timidity++ mpc ncmpcpp sxiv xorg-xrdb rsync htop btop \
-  firefox speech-dispatcher flatpak kitty wl-clipboard nvim lazygit fzf ripgrep fd tmux nodejs npm docker
+  yazi poppler mpv yt-dlp mpd timidity++ mpc ncmpcpp sxiv xorg-xrdb rsync fastfetch htop btop \
+  firefox speech-dispatcher flatpak kitty wl-clipboard nvim lazygit fzf ripgrep fd tmux \
+  docker nodejs npm jdk-openjdk
 
 # installing flatpak packages
 flatpak install -y flathub org.telegram.desktop
