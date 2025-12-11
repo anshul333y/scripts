@@ -98,7 +98,7 @@ pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
   uwsm brightnessctl acpi pacman-contrib python-pywal xdg-user-dirs \
   yazi poppler mpv yt-dlp mpd timidity++ mpc ncmpcpp sxiv xorg-xrdb rsync htop btop \
-  firefox flatpak kitty wl-clipboard nvim lazygit fzf ripgrep fd tmux nodejs npm docker
+  firefox speech-dispatcher flatpak kitty wl-clipboard nvim lazygit fzf ripgrep fd tmux nodejs npm docker
 
 # installing flatpak packages
 flatpak install --noninteractive flathub org.telegram.desktop
@@ -189,7 +189,7 @@ git clone https://aur.archlinux.org/paru-bin.git ~/dl/paru
 cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
 
 # installing aur packages
-paru -S --noconfirm hyprshot-git wlogout brave-bin google-chrome visual-studio-code-bin
+paru -S --noconfirm hyprshot-git wlogout visual-studio-code-bin
 
 # post install steps
 rm .bash* .zshrc
