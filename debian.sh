@@ -9,6 +9,9 @@ sudo sed -i 's/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=true/' /etc/
 # allow sudo group to use sudo without a password
 echo "%sudo ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
 
+# configure zsh
+echo 'export ZDOTDIR="$HOME/.config/zsh"' | sudo tee -a /etc/zsh/zshenv
+
 # installing apt packages
 sudo apt install -y cronie curl zsh git stow unzip \
   python3-venv imagemagick \

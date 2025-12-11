@@ -128,6 +128,9 @@ user_pass=your_user_password
 echo "root:$root_pass" | chpasswd
 echo "$username:$user_pass" | chpasswd
 
+# configure zsh
+echo 'export ZDOTDIR="$HOME/.config/zsh"' >>/etc/zsh/zshenv
+
 # configure reflector
 sed -i "s/5/30/" /etc/xdg/reflector/reflector.conf
 sed -i "s/age/rate/" /etc/xdg/reflector/reflector.conf
