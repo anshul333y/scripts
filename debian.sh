@@ -23,6 +23,7 @@ sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flat
 flatpak install -y flathub com.github.wwmm.easyeffects
 flatpak install -y flathub org.telegram.desktop
 flatpak install -y flathub com.discordapp.Discord
+flatpak install -y flathub io.github.sxyazi.yazi
 
 # enabling systemd services
 sudo systemctl enable cronie.service
