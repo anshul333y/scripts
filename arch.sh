@@ -191,7 +191,7 @@ curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/down
 7z x ~/dl/font.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font.zip
 
 # installing aur helper paru
-git clone https://aur.archlinux.org/paru-bin.git ~/dl/paru
+git clone https://aur.archlinux.org/paru.git ~/dl/paru
 cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
 
 # installing aur packages
