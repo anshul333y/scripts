@@ -163,7 +163,9 @@ printf '\033c'
 
 # creating user-dirs
 cd $HOME
-mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids ~/.local/share/mpd
+mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
+mkdir -p ~/.local/share/mpd ~/.cache/zsh ~/.local/state/zsh
+mv .gnupg ~/.local/share/gnupg
 
 # installing LazyVim
 git clone https://github.com/LazyVim/starter ~/.config/nvim

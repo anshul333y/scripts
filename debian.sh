@@ -34,8 +34,11 @@ chsh -s /usr/bin/zsh
 
 # creating user-dirs
 cd $HOME
-mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids ~/.local/share/mpd
-rm -rf ~/.config/user-dirs.dirs ~/Desktop ~/Documents ~/Downloads ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
+mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
+mkdir -p ~/.local/share/mpd ~/.cache/zsh ~/.local/state/zsh
+rm -rf ~/Desktop ~/Documents ~/Downloads ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
+rm -rf ~/.config/user-dirs.dirs
+mv .gnupg ~/.local/share/gnupg
 
 # installing LazyVim
 git clone https://github.com/LazyVim/starter ~/.config/nvim
