@@ -4,10 +4,11 @@ printf '\033c'
 
 # configure grub with custom boot params
 sudo sed -i 's/quiet splash/pci=noaer/' /etc/default/grub
-sudo sed -i 's/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=true/' /etc/default/grub
+sudo sed -i 's/GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=true/' /etc/default/grub
 
-# allow sudo group to use sudo without a password
+# configure sudo
 echo "%sudo ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
+echo 'Defaults !admin_flag' | sudo tee /etc/sudoers.d/disable_admin_file_in_home
 
 # configure zsh
 echo 'export ZDOTDIR="$HOME/.config/zsh"' | sudo tee -a /etc/zsh/zshenv

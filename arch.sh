@@ -115,7 +115,7 @@ systemctl enable cronie.service
 rm /bin/sh
 ln -s dash /bin/sh
 
-# allow wheel group to use sudo without a password
+# configure sudo
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 
 # create a new user and add to wheel group
