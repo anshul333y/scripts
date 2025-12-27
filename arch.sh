@@ -92,7 +92,7 @@ sed -i 's/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/defa
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # installing pacman packages
-pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip \
+pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip unzip \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra easyeffects calf mda.lv2 lsp-plugins-lv2 zam-plugins-lv2 \
   hyprland hyprpaper hypridle hyprlock rofi-wayland waybar dunst polkit-gnome gnome-keyring \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
