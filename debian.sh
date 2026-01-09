@@ -42,7 +42,7 @@ mv .gnupg ~/.local/share/gnupg
 echo "*" >>~/.config/tmux/plugins/.gitignore
 
 # installing LazyVim
-git clone https://github.com/LazyVim/starter ~/.config/nvim
+git clone https://github.com/anshul333y/nvim ~/.config/nvim
 
 # installing dotfiles
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
