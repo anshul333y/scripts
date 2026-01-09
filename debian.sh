@@ -39,6 +39,7 @@ mkdir -p ~/.local/share/mpd ~/.cache/zsh ~/.local/state/zsh
 rm -rf ~/Desktop ~/Documents ~/Downloads ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
 rm -rf ~/.config/user-dirs.dirs
 mv .gnupg ~/.local/share/gnupg
+echo "*" >>~/.config/tmux/plugins/.gitignore
 
 # installing LazyVim
 git clone https://github.com/LazyVim/starter ~/.config/nvim
