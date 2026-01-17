@@ -164,16 +164,13 @@ cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
 mkdir -p ~/.local/share/mpd ~/.cache/zsh ~/.local/state/zsh
 mv .gnupg ~/.local/share/gnupg
-echo "*" >>~/.config/tmux/plugins/.gitignore
-
-# installing LazyVim
-git clone https://github.com/anshul333y/nvim ~/.config/nvim
 
 # installing dotfiles
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles && stow --adopt . && cd
-
-# adding crontab
+git clone https://github.com/anshul333y/nvim ~/.config/nvim
+echo "*" >>~/.config/tmux/plugins/.gitignore
+ln -s ~/.config/user.js ~/.mozilla/firefox/*.default-release/
 echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
 
 # installing oh-my-zsh with plugins

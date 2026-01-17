@@ -39,16 +39,13 @@ mkdir -p ~/.local/share/mpd ~/.cache/zsh ~/.local/state/zsh
 rm -rf ~/Desktop ~/Documents ~/Downloads ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
 rm -rf ~/.config/user-dirs.dirs
 mv .gnupg ~/.local/share/gnupg
-echo "*" >>~/.config/tmux/plugins/.gitignore
-
-# installing LazyVim
-git clone https://github.com/anshul333y/nvim ~/.config/nvim
 
 # installing dotfiles
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles && stow --adopt . && cd
-
-# loading dconf
+git clone https://github.com/anshul333y/nvim ~/.config/nvim
+echo "*" >>~/.config/tmux/plugins/.gitignore
+ln -s ~/.config/user.js ~/.mozilla/firefox/*.default-release/
 dconf load / <~/.config/gnome.dconf
 powerprofilesctl set performance
 python3 -m venv ~/.python-venv && source ~/.python-venv/bin/activate && pip install pywal
