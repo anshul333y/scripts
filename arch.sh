@@ -170,7 +170,7 @@ git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles && stow --adopt . && cd
 git clone https://github.com/anshul333y/nvim ~/.config/nvim
 echo "*" >>~/.config/tmux/plugins/.gitignore
-ln -s ~/.config/user.js ~/.mozilla/firefox/*.default-release/
+ln -s ~/.config/custom/user.js ~/.mozilla/firefox/*.default-release/
 echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
 
 # installing oh-my-zsh with plugins

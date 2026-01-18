@@ -45,8 +45,8 @@ git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles && stow --adopt . && cd
 git clone https://github.com/anshul333y/nvim ~/.config/nvim
 echo "*" >>~/.config/tmux/plugins/.gitignore
-ln -s ~/.config/user.js ~/.mozilla/firefox/*.default-release/
-dconf load / <~/.config/gnome.dconf
+ln -s ~/.config/custom/user.js ~/.mozilla/firefox/*.default-release/
+dconf load / <~/.config/custom/gnome.dconf
 powerprofilesctl set performance
 python3 -m venv ~/.python-venv && source ~/.python-venv/bin/activate && pip install pywal
 
