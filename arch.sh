@@ -130,7 +130,7 @@ echo "$username:$user_pass" | chpasswd
 echo 'export ZDOTDIR="$HOME/.config/zsh"' >>/etc/zsh/zshenv
 
 # configure reflector
-sed -i "s/5/30/" /etc/xdg/reflector/reflector.conf
+sed -i "s/5/10/" /etc/xdg/reflector/reflector.conf
 sed -i "s/age/rate/" /etc/xdg/reflector/reflector.conf
 
 # unlock and auto-start the gnome keyring at login
