@@ -79,7 +79,7 @@ pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip u
   hyprland hyprpaper hypridle hyprlock rofi-wayland waybar dunst polkit-gnome gnome-keyring \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
   uwsm brightnessctl acpi pacman-contrib python-pywal python-pip xdg-user-dirs \
-  yazi poppler mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp sxiv xorg-xrdb rsync fastfetch htop btop \
+  yazi poppler mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc sxiv xorg-xrdb rsync fastfetch htop btop \
   firefox speech-dispatcher flatpak kitty wl-clipboard tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd \
   docker nodejs npm jdk-openjdk
 
@@ -153,7 +153,7 @@ mv .gnupg ~/.local/share/gnupg
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles && stow --adopt . && cd
 git clone https://github.com/anshul333y/nvim ~/.config/nvim
-echo "*" >>~/.config/tmux/plugins/.gitignore
+mkdir -p ~/.config/tmux/plugins && echo "*" >>~/.config/tmux/plugins/.gitignore
 ln -s ~/.config/custom/user.js ~/.mozilla/firefox/*.default-release/
 echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
 
