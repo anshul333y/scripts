@@ -3,16 +3,10 @@
 #part1
 printf '\033c'
 
-# configure pacman
+# configure pacman | update keyring | set keyboard layout to us | enable network time sync
 sed -i "s/ParallelDownloads = 5/ParallelDownloads = 15/" /etc/pacman.conf
-
-# update keyring and sync package databases
 pacman --noconfirm -Sy archlinux-keyring
-
-# set keyboard layout to us
 loadkeys us
-
-# enable network time sync
 timedatectl set-ntp true
 
 # partition, format and mount partitions
@@ -54,34 +48,24 @@ sed -i "s/ParallelDownloads = 5/ParallelDownloads = 15/" /etc/pacman.conf
 sed -i "s/#Color/Color/" /etc/pacman.conf
 sed -i "s/filesystems/filesystems resume/" /etc/mkinitcpio.conf
 
-# set system timezone
+# set system timezone | set hardware clock | enable english locale | set system-wide locale and keymap
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
-
-# set hardware clock from system time
 hwclock --systohc
-
-# enable english locale
 echo "en_US.UTF-8 UTF-8" >>/etc/locale.gen
 locale-gen
-
-# set system-wide locale and keymap
 echo "LANG=en_US.UTF-8" >/etc/locale.conf
 echo "KEYMAP=us" >/etc/vconsole.conf
 
-# set hostname
+# set hostname | configure hosts file | generate initramfs image
 hostname=archlinux
 echo $hostname >/etc/hostname
-
-# configure hosts file
 echo "127.0.0.1       localhost" >>/etc/hosts
 echo "::1             localhost" >>/etc/hosts
 echo "127.0.1.1       $hostname.localdomain $hostname" >>/etc/hosts
-
-# generate initramfs image
 mkinitcpio -P
 
 # install and configure grub with custom boot params
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch
 sed -i 's/GRUB_DEFAULT=0/GRUB_DEFAULT=saved/' /etc/default/grub
 sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/' /etc/default/grub
 sed -i 's/quiet/pci=noaer/' /etc/default/grub
