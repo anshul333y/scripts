@@ -132,15 +132,15 @@ printf '\033c'
 # creating user-dirs
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
-mkdir -p ~/.local/share/mpd ~/.cache/zsh ~/.local/state/zsh
-mv .gnupg ~/.local/share/gnupg
+mkdir -p ~/.cache/zsh ~/.local/state/zsh ~/.local/share/mpd ~/.config/tmux/plugins
+mv ~/.gnupg ~/.local/share/gnupg
 
 # installing dotfiles
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles && stow --adopt . && cd
 git clone https://github.com/anshul333y/nvim ~/.config/nvim
-mkdir -p ~/.config/tmux/plugins && echo "*" >>~/.config/tmux/plugins/.gitignore
-ln -s ~/.config/custom/user.js ~/.mozilla/firefox/*.default-release/
+echo "*" >>~/.config/tmux/plugins/.gitignore
+ln -s ~/.config/custom/user.js ~/.config/mozilla/firefox/*.default-release
 echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
 
 # installing oh-my-zsh with plugins
