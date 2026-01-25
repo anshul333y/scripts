@@ -41,11 +41,6 @@ exit
 #part2
 printf '\033c'
 
-# configure pacman and mkinitcpio
-sed -i "s/ParallelDownloads = 5/ParallelDownloads = 15/" /etc/pacman.conf
-sed -i "s/#Color/Color/" /etc/pacman.conf
-sed -i "s/filesystems/filesystems resume/" /etc/mkinitcpio.conf
-
 # set system timezone | set hardware clock | enable english locale | set system-wide locale and keymap
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 hwclock --systohc
@@ -54,7 +49,10 @@ locale-gen
 echo "LANG=en_US.UTF-8" >/etc/locale.conf
 echo "KEYMAP=us" >/etc/vconsole.conf
 
-# set hostname | configure hosts file | generate initramfs image
+# configure pacman and mkinitcpio | set hostname | configure hosts file | generate initramfs image
+sed -i "s/ParallelDownloads = 5/ParallelDownloads = 15/" /etc/pacman.conf
+sed -i "s/#Color/Color/" /etc/pacman.conf
+sed -i "s/filesystems/filesystems resume/" /etc/mkinitcpio.conf
 hostname=archlinux
 echo $hostname >/etc/hostname
 echo "127.0.0.1       localhost" >>/etc/hosts
@@ -71,7 +69,7 @@ sed -i 's/#GRUB_SAVEDEFAULT=true/GRUB_SAVEDEFAULT=true/' /etc/default/grub
 sed -i 's/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
-# installing pacman packages | installing flatpak packages
+# installing pacman packages | installing flatpak packages | enabling systemd services
 pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip unzip \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra easyeffects calf mda.lv2 lsp-plugins-lv2 zam-plugins-lv2 \
   hyprland hyprpaper hypridle hyprlock rofi-wayland waybar dunst polkit-gnome gnome-keyring \
@@ -81,12 +79,7 @@ pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip u
   firefox speech-dispatcher flatpak kitty wl-clipboard tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd \
   docker nodejs npm jdk-openjdk
 flatpak install -y flathub org.telegram.desktop com.discordapp.Discord
-
-# enabling systemd services
-systemctl enable NetworkManager.service
-systemctl enable bluetooth.service
-systemctl enable reflector.timer
-systemctl enable cronie.service
+systemctl enable NetworkManager.service bluetooth.service reflector.timer cronie.service
 
 # create a new user and add to wheel group | set root and user passwords
 username=anshul333y
@@ -104,11 +97,9 @@ echo 'export ZDOTDIR="$HOME/.config/zsh"' >>/etc/zsh/zshenv
 sed -i "s/5/10/" /etc/xdg/reflector/reflector.conf
 sed -i "s/age/rate/" /etc/xdg/reflector/reflector.conf
 
-# unlock and auto-start the gnome keyring at login
+# unlock and auto-start the gnome keyring at login | charging and discharging notifications
 sed -i "/auth       include      system-local-login/a auth       optional     pam_gnome_keyring.so" /etc/pam.d/login
 sed -i "/session    include      system-local-login/a session    optional     pam_gnome_keyring.so auto_start" /etc/pam.d/login
-
-# charging and discharging notifications
 echo 'ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", ENV{DISPLAY}=":0", ENV{XAUTHORITY}="/home/anshul333y/.Xauthority" RUN+="/usr/bin/su anshul333y -c '\''/home/anshul333y/.local/bin/notify/notify-battery-charging discharging'\''"' >>/etc/udev/rules.d/power.rules
 echo 'ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", ENV{DISPLAY}=":0", ENV{XAUTHORITY}="/home/anshul333y/.Xauthority" RUN+="/usr/bin/su anshul333y -c '\''/home/anshul333y/.local/bin/notify/notify-battery-charging charging'\''"' >>/etc/udev/rules.d/power.rules
 
@@ -121,21 +112,13 @@ su -c $arch3_path -s /bin/sh $username
 exit
 
 #part3
-# anshul333y's hyprland installer script
 printf '\033c'
 
-# # installing pacman packages | installing flatpak packages
-# # enabling systemd services
-# # changing shell to zsh
-# sudo chsh -s /bin/zsh
-
-# creating user-dirs
+# creating user-dirs | installing dotfiles
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
 mkdir -p ~/.cache/zsh ~/.local/state/zsh ~/.local/share/mpd ~/.config/tmux/plugins
 mv ~/.gnupg ~/.local/share/gnupg
-
-# installing dotfiles
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles && stow --adopt . && cd
 git clone https://github.com/anshul333y/nvim ~/.config/nvim
@@ -152,16 +135,11 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}
 git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM}/plugins/zsh-history-substring-search
 git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM}/plugins/you-should-use
 
-# installing font
+# installing font | installing aur helper paru | installing aur packages | post install steps
 curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/download/v7.4/MapleMono-NF-CN-unhinted.zip"
 7z x ~/dl/font.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font.zip
-
-# installing aur helper paru
 git clone https://aur.archlinux.org/paru.git ~/dl/paru
 cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
-
-# installing aur packages
 paru -S --noconfirm hyprshot-git wlogout google-chrome visual-studio-code-bin
-
-# post install steps
-rm .bash* .zshrc
+rm ~/.bash* ~/.zshrc
+exit
