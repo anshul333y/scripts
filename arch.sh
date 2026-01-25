@@ -27,11 +27,9 @@ mount $boot /mnt/boot
 mount $home /mnt/home
 swapon $swap
 
-# install base system
+# install base system | generate fstab
 pacstrap -K /mnt base base-devel linux linux-firmware intel-ucode grub efibootmgr os-prober \
   networkmanager dhcpcd bluez bluez-utils pipewire pipewire-pulse
-
-# generate fstab
 genfstab -U /mnt >>/mnt/etc/fstab
 
 # run second stage of installer inside chroot
@@ -73,7 +71,7 @@ sed -i 's/#GRUB_SAVEDEFAULT=true/GRUB_SAVEDEFAULT=true/' /etc/default/grub
 sed -i 's/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
-# installing pacman packages
+# installing pacman packages | installing flatpak packages
 pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip unzip \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra easyeffects calf mda.lv2 lsp-plugins-lv2 zam-plugins-lv2 \
   hyprland hyprpaper hypridle hyprlock rofi-wayland waybar dunst polkit-gnome gnome-keyring \
@@ -82,10 +80,7 @@ pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip u
   yazi poppler mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc sxiv xorg-xrdb rsync fastfetch htop btop \
   firefox speech-dispatcher flatpak kitty wl-clipboard tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd \
   docker nodejs npm jdk-openjdk
-
-# installing flatpak packages
-flatpak install -y flathub org.telegram.desktop
-flatpak install -y flathub com.discordapp.Discord
+flatpak install -y flathub org.telegram.desktop com.discordapp.Discord
 
 # enabling systemd services
 systemctl enable NetworkManager.service
@@ -93,27 +88,19 @@ systemctl enable bluetooth.service
 systemctl enable reflector.timer
 systemctl enable cronie.service
 
-# replace default shell with dash
-rm /bin/sh
-ln -s dash /bin/sh
-
-# configure sudo
-echo "%wheel ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
-
-# create a new user and add to wheel group
+# create a new user and add to wheel group | set root and user passwords
 username=anshul333y
 useradd -m -G wheel -s /bin/zsh $username
-
-# set root and user passwords
 root_pass=your_root_password
 user_pass=your_user_password
 echo "root:$root_pass" | chpasswd
 echo "$username:$user_pass" | chpasswd
 
-# configure zsh
+# replace default shell with dash | configure sudo | configure zsh | configure reflector
+rm /bin/sh
+ln -s dash /bin/sh
+echo "%wheel ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 echo 'export ZDOTDIR="$HOME/.config/zsh"' >>/etc/zsh/zshenv
-
-# configure reflector
 sed -i "s/5/10/" /etc/xdg/reflector/reflector.conf
 sed -i "s/age/rate/" /etc/xdg/reflector/reflector.conf
 
@@ -137,8 +124,7 @@ exit
 # anshul333y's hyprland installer script
 printf '\033c'
 
-# # installing pacman packages
-# # installing flatpak packages
+# # installing pacman packages | installing flatpak packages
 # # enabling systemd services
 # # changing shell to zsh
 # sudo chsh -s /bin/zsh
