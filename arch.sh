@@ -117,7 +117,7 @@ printf '\033c'
 # creating user-dirs | installing dotfiles
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
-mkdir -p ~/.cache/zsh ~/.local/state/zsh ~/.local/share/mpd ~/.config/tmux/plugins
+mkdir -p ~/.cache/zsh ~/.local/state/zsh ~/.local/state/vim ~/.local/share/mpd ~/.config/tmux/plugins
 mv ~/.gnupg ~/.local/share/gnupg
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles && stow --adopt . && cd

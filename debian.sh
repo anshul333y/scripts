@@ -1,5 +1,6 @@
 # anshul333y's debian installer script
 
+#part1
 printf '\033c'
 
 # configure grub with custom boot params
@@ -31,6 +32,9 @@ sudo systemctl enable cronie.service
 
 # changing shell to zsh
 chsh -s /usr/bin/zsh
+
+#part2
+printf '\033c'
 
 # creating user-dirs
 cd $HOME
@@ -123,3 +127,4 @@ sudo usermod -aG docker $USER
 
 # post install steps
 rm .bash* .zshrc
+exit
