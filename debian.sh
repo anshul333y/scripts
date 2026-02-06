@@ -7,49 +7,36 @@ printf '\033c'
 sudo sed -i 's/quiet splash/pci=noaer/' /etc/default/grub
 sudo sed -i 's/GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=true/' /etc/default/grub
 
-# configure sudo
-echo "%sudo ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
-echo 'Defaults !admin_flag' | sudo tee /etc/sudoers.d/disable_admin_file_in_home
-
-# configure zsh
-echo 'export ZDOTDIR="$HOME/.config/zsh"' | sudo tee -a /etc/zsh/zshenv
-
-# installing apt packages
+# installing apt packages | installing flatpak packages | enabling systemd services
 sudo apt install -y cronie curl zsh git stow unzip \
   python3-venv imagemagick \
   mpv yt-dlp mpd mpc ncmpcpp rsync sxiv htop btop \
   flatpak wl-clipboard fzf ripgrep fd-find tmux gcc g++ nodejs npm
-
-# installing flatpak packages
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install -y flathub com.github.wwmm.easyeffects
-flatpak install -y flathub org.telegram.desktop
-flatpak install -y flathub com.discordapp.Discord
-flatpak install -y flathub io.github.sxyazi.yazi
-
-# enabling systemd services
+flatpak install -y flathub com.github.wwmm.easyeffects org.telegram.desktop com.discordapp.Discord
 sudo systemctl enable cronie.service
 
-# changing shell to zsh
+# changing shell to zsh | configure sudo | configure zsh
 chsh -s /usr/bin/zsh
+echo "%sudo ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
+echo 'Defaults !admin_flag' | sudo tee -a /etc/sudoers.d/disable_admin_file_in_home
+echo 'export ZDOTDIR="$HOME/.config/zsh"' | sudo tee -a /etc/zsh/zshenv
 
 #part2
 printf '\033c'
 
-# creating user-dirs
+# creating user-dirs | installing dotfiles
 cd $HOME
+rm -rf ~/Desktop ~/Documents ~/Downloads ~/Music ~/Pictures ~/Public ~/Templates ~/Videos ~/.config/user-dirs.dirs
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
-mkdir -p ~/.local/share/mpd ~/.cache/zsh ~/.local/state/zsh
-rm -rf ~/Desktop ~/Documents ~/Downloads ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
-rm -rf ~/.config/user-dirs.dirs
-mv .gnupg ~/.local/share/gnupg
-
-# installing dotfiles
+mkdir -p ~/.cache/zsh ~/.local/state/zsh ~/.local/state/vim ~/.local/share/mpd ~/.config/tmux/plugins
+mv ~/.gnupg ~/.local/share/gnupg
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles && stow --adopt . && cd
 git clone https://github.com/anshul333y/nvim ~/.config/nvim
 echo "*" >>~/.config/tmux/plugins/.gitignore
-ln -s ~/.config/custom/user.js ~/.mozilla/firefox/*.default-release/
+ln -s ~/.config/custom/user.js ~/.config/mozilla/firefox/*.default-release
+echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
 dconf load / <~/.config/custom/gnome.dconf
 powerprofilesctl set performance
 python3 -m venv ~/.python-venv && source ~/.python-venv/bin/activate && pip install pywal
@@ -126,5 +113,5 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin d
 sudo usermod -aG docker $USER
 
 # post install steps
-rm .bash* .zshrc
+rm ~/.bash* ~/.zshrc
 exit
