@@ -94,7 +94,7 @@ rm /bin/sh
 ln -s dash /bin/sh
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 echo 'export ZDOTDIR="$HOME/.config/zsh"' >>/etc/zsh/zshenv
-sed -i "s/5/10/" /etc/xdg/reflector/reflector.conf
+sed -i "s/5/30/" /etc/xdg/reflector/reflector.conf
 sed -i "s/age/rate/" /etc/xdg/reflector/reflector.conf
 
 # unlock and auto-start the gnome keyring at login | charging and discharging notifications
