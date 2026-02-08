@@ -76,7 +76,7 @@ pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip u
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
   uwsm brightnessctl acpi pacman-contrib python-pywal python-pip xdg-user-dirs \
   yazi poppler mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc sxiv xorg-xrdb rsync fastfetch htop btop \
-  firefox speech-dispatcher flatpak kitty wl-clipboard tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd \
+  firefox speech-dispatcher flatpak kitty wl-clipboard zoxide tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd \
   docker nodejs npm jdk-openjdk
 flatpak install -y flathub org.telegram.desktop com.discordapp.Discord
 systemctl enable NetworkManager.service bluetooth.service reflector.timer cronie.service
