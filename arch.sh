@@ -79,7 +79,7 @@ pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip u
   firefox speech-dispatcher flatpak kitty wl-clipboard zoxide tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd \
   docker nodejs npm jdk-openjdk
 flatpak install -y flathub org.telegram.desktop com.discordapp.Discord
-systemctl enable NetworkManager.service bluetooth.service reflector.timer cronie.service
+systemctl enable NetworkManager.service bluetooth.service reflector.timer cronie.service docker.service
 
 # create a new user and add to wheel group | set root and user passwords
 username=anshul333y
@@ -140,6 +140,6 @@ curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/down
 7z x ~/dl/font.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font.zip
 git clone https://aur.archlinux.org/paru.git ~/dl/paru
 cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
-paru -S --noconfirm hyprshot-git wlogout google-chrome visual-studio-code-bin
+paru -S --noconfirm hyprshot-git wlogout brave-bin google-chrome visual-studio-code-bin postman-bin mongodb-compass-bin
 rm ~/.bash* ~/.zshrc
 exit
