@@ -28,7 +28,8 @@ mount $home /mnt/home
 swapon $swap
 
 # install base system | generate fstab
-pacstrap -K /mnt base base-devel linux linux-firmware intel-ucode grub efibootmgr os-prober \
+pacstrap -K /mnt base base-devel linux linux-firmware grub efibootmgr os-prober \
+  intel-ucode mesa vulkan-intel intel-media-driver thermald power-profiles-daemon \
   networkmanager dhcpcd bluez bluez-utils pipewire pipewire-pulse
 genfstab -U /mnt >>/mnt/etc/fstab
 
@@ -79,7 +80,8 @@ pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip u
   firefox speech-dispatcher flatpak kitty wl-clipboard zoxide tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd \
   docker nodejs npm jdk-openjdk
 flatpak install -y flathub org.telegram.desktop com.discordapp.Discord
-systemctl enable NetworkManager.service bluetooth.service reflector.timer cronie.service
+systemctl enable thermald power-profiles-daemon NetworkManager.service bluetooth.service \
+  reflector.timer cronie.service docker.service
 
 # create a new user and add to wheel group | set root and user passwords
 username=anshul333y
@@ -125,6 +127,8 @@ git clone https://github.com/anshul333y/nvim ~/.config/nvim
 echo "*" >>~/.config/tmux/plugins/.gitignore
 ln -s ~/.config/custom/user.js ~/.config/mozilla/firefox/*.default-release
 echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
+dconf load / <~/.config/custom/gnome.dconf
+powerprofilesctl set performance
 
 # installing oh-my-zsh with plugins
 export ZSH="$HOME/.config/oh-my-zsh"
