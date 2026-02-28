@@ -144,6 +144,6 @@ curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/down
 7z x ~/dl/font.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font.zip
 git clone https://aur.archlinux.org/paru.git ~/dl/paru
 cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
-paru -S --noconfirm hyprshot-git wlogout google-chrome visual-studio-code-bin
+paru -S --noconfirm hyprshot-git wlogout google-chrome postman-bin
 rm ~/.bash* ~/.zshrc
 exit
