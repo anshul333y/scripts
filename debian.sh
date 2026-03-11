@@ -32,6 +32,7 @@ mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
 mkdir -p ~/.cache/zsh ~/.local/state/zsh ~/.local/state/vim ~/.local/share/mpd ~/.config/tmux/plugins
 mv ~/.gnupg ~/.local/share/gnupg
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
+git clone https://github.com/anshul333y/scripts.git ~/.local/bin
 cd ~/.dotfiles && stow --adopt . && cd
 git clone https://github.com/anshul333y/nvim ~/.config/nvim
 echo "*" >>~/.config/tmux/plugins/.gitignore
