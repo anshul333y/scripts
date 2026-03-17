@@ -28,8 +28,8 @@ mount $home /mnt/home
 swapon $swap
 
 # install base system | generate fstab
-pacstrap -K /mnt base base-devel linux linux-firmware grub efibootmgr os-prober \
-  intel-ucode mesa vulkan-intel intel-media-driver thermald power-profiles-daemon \
+pacstrap -K /mnt base base-devel linux linux-headers linux-zen linux-zen-headers linux-firmware \
+  grub efibootmgr os-prober intel-ucode mesa vulkan-intel intel-media-driver thermald power-profiles-daemon \
   networkmanager dhcpcd bluez bluez-utils pipewire pipewire-pulse
 genfstab -U /mnt >>/mnt/etc/fstab
 
@@ -66,6 +66,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch
 sed -i 's/GRUB_DEFAULT=0/GRUB_DEFAULT=saved/' /etc/default/grub
 sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/' /etc/default/grub
 sed -i 's/quiet/pci=noaer/' /etc/default/grub
+sed -i 's/GRUB_TIMEOUT_STYLE=menu/GRUB_TIMEOUT_STYLE=hidden/' /etc/default/grub
 sed -i 's/#GRUB_SAVEDEFAULT=true/GRUB_SAVEDEFAULT=true/' /etc/default/grub
 sed -i 's/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
