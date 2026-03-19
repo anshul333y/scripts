@@ -120,13 +120,12 @@ printf '\033c'
 # creating user-dirs | installing dotfiles
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
-mkdir -p ~/.cache/zsh ~/.local/state/zsh ~/.local/state/vim ~/.local/share/mpd ~/.config/tmux/plugins
-mv ~/.gnupg ~/.local/share/gnupg
+mkdir -p ~/.cache/zsh ~/.local/state/zsh ~/.local/state/vim ~/.local/share/mpd
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
 git clone https://github.com/anshul333y/scripts.git ~/.local/bin
 cd ~/.dotfiles && stow --adopt . && cd
 git clone https://github.com/anshul333y/nvim ~/.config/nvim
-echo "*" >>~/.config/tmux/plugins/.gitignore
+mkdir -p ~/.config/tmux/plugins && echo "*" >>~/.config/tmux/plugins/.gitignore
 ln -s ~/.config/custom/user.js ~/.config/mozilla/firefox/*.default-release
 echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
 dconf load / <~/.config/custom/gnome.dconf
@@ -146,6 +145,7 @@ curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/down
 7z x ~/dl/font.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font.zip
 git clone https://aur.archlinux.org/paru.git ~/dl/paru
 cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
-paru -S --noconfirm hyprshot-git wlogout google-chrome postman-bin
-rm ~/.bash* ~/.zshrc
+paru -S --noconfirm hyprshot-git wlogout google-chrome visual-studio-code-bin postman-bin
+mv ~/.gnupg ~/.local/share/gnupg
+rm -rf ~/.bash* ~/.zshrc
 exit

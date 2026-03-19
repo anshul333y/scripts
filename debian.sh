@@ -27,20 +27,17 @@ printf '\033c'
 
 # creating user-dirs | installing dotfiles
 cd $HOME
-rm -rf ~/Desktop ~/Documents ~/Downloads ~/Music ~/Pictures ~/Public ~/Templates ~/Videos ~/.config/user-dirs.dirs
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
-mkdir -p ~/.cache/zsh ~/.local/state/zsh ~/.local/state/vim ~/.local/share/mpd ~/.config/tmux/plugins
-mv ~/.gnupg ~/.local/share/gnupg
+mkdir -p ~/.cache/zsh ~/.local/state/zsh ~/.local/state/vim ~/.local/share/mpd
 git clone https://github.com/anshul333y/.dotfiles.git ~/.dotfiles
 git clone https://github.com/anshul333y/scripts.git ~/.local/bin
-cd ~/.dotfiles && stow --adopt . && cd
+rm -rf ~/.config/user-dirs.dirs && cd ~/.dotfiles && stow --adopt . && cd
 git clone https://github.com/anshul333y/nvim ~/.config/nvim
-echo "*" >>~/.config/tmux/plugins/.gitignore
+mkdir -p ~/.config/tmux/plugins && echo "*" >>~/.config/tmux/plugins/.gitignore
 ln -s ~/.config/custom/user.js ~/.config/mozilla/firefox/*.default-release
 echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
 dconf load / <~/.config/custom/gnome.dconf
 powerprofilesctl set performance
-python3 -m venv ~/.python-venv && source ~/.python-venv/bin/activate && pip install pywal
 
 # installing oh-my-zsh with plugins
 export ZSH="$HOME/.config/oh-my-zsh"
@@ -52,7 +49,7 @@ git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM
 git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM}/plugins/you-should-use
 
 # installing font
-curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/download/v7.4/MapleMono-NF-CN-unhinted.zip"
+curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN.zip"
 unzip ~/dl/font.zip -d ~/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font.zip
 
 # installing kitty
@@ -114,5 +111,8 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin d
 sudo usermod -aG docker $USER
 
 # post install steps
-rm ~/.bash* ~/.zshrc
+rm -rf ~/Desktop ~/Documents ~/Downloads ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
+python3 -m venv ~/.python-venv && source ~/.python-venv/bin/activate && pip install pywal
+mv ~/.gnupg ~/.local/share/gnupg
+rm -rf ~/.bash* ~/.zshrc
 exit
