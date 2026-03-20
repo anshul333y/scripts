@@ -49,7 +49,7 @@ git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM
 git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM}/plugins/you-should-use
 
 # installing font
-curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN.zip"
+curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip"
 unzip ~/dl/font.zip -d ~/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font.zip
 
 # installing kitty
@@ -111,8 +111,8 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin d
 sudo usermod -aG docker $USER
 
 # post install steps
+python3 -m venv ~/.local/venvs/pywal && source ~/.local/venvs/pywal/bin/activate && pip install pywal
 rm -rf ~/Desktop ~/Documents ~/Downloads ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
-python3 -m venv ~/.python-venv && source ~/.python-venv/bin/activate && pip install pywal
 mv ~/.gnupg ~/.local/share/gnupg
 rm -rf ~/.bash* ~/.zshrc
 exit

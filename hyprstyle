@@ -16,7 +16,7 @@ else
   ln -sf "$WALLPAPER" "$SYMLINK"
 fi
 
-source ~/.python-venv/bin/activate 2>/dev/null
+source ~/.local/venvs/pywal/bin/activate 2>/dev/null
 TERM=dumb wal -i "$WALLPAPER" 2>/dev/null
 
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
