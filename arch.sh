@@ -73,11 +73,11 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 # installing pacman packages | installing flatpak packages | enabling systemd services
 pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip unzip man-db \
-  noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-dejavu ttf-liberation \
+  noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra \
   hyprland hyprpaper hypridle hyprlock rofi-wayland waybar dunst polkit-gnome gnome-keyring \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
   uwsm brightnessctl acpi pacman-contrib python-pywal easyeffects calf mda.lv2 lsp-plugins-lv2 zam-plugins-lv2 \
-  yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc sxiv xorg-xrdb rsync fastfetch htop btop \
+  yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc sxiv rsync fastfetch htop btop \
   firefox speech-dispatcher flatpak kitty wl-clipboard zoxide tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd \
   zathura zathura-pdf-mupdf docker bun nodejs npm yarn pnpm pgcli jdk-openjdk
 flatpak install -y flathub org.telegram.desktop com.discordapp.Discord
