@@ -79,7 +79,7 @@ pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip u
   uwsm brightnessctl acpi pacman-contrib python-pywal easyeffects calf mda.lv2 lsp-plugins-lv2 zam-plugins-lv2 \
   yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc sxiv rsync fastfetch htop btop \
   firefox speech-dispatcher flatpak kitty wl-clipboard zoxide tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd \
-  zathura zathura-pdf-mupdf docker bun nodejs npm yarn pnpm pgcli jdk-openjdk
+  zathura zathura-pdf-mupdf docker bun nodejs npm yarn pnpm pgcli jdk-openjdk opencode
 flatpak install -y flathub org.telegram.desktop com.discordapp.Discord
 systemctl enable thermald power-profiles-daemon NetworkManager.service bluetooth.service \
   reflector.timer cronie.service docker.service
@@ -145,7 +145,7 @@ curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/down
 7z x ~/dl/font.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font.zip
 git clone https://aur.archlinux.org/paru.git ~/dl/paru
 cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
-paru -S --noconfirm hyprshot-git wlogout google-chrome postman-bin
+paru -S --noconfirm hyprshot-git wlogout google-chrome
 mv ~/.gnupg ~/.local/share/gnupg
 mv ~/.cargo ~/.local/share/cargo
 rm -rf ~/.bash* ~/.zshrc
