@@ -73,14 +73,14 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 # installing pacman packages | installing flatpak packages | enabling systemd services
 pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip unzip man-db \
-  noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra \
+  noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra zathura zathura-pdf-mupdf \
   hyprland hyprpaper hypridle hyprlock rofi-wayland waybar dunst polkit-gnome gnome-keyring \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
-  uwsm brightnessctl acpi pacman-contrib python-pywal easyeffects calf mda.lv2 lsp-plugins-lv2 zam-plugins-lv2 \
+  firefox speech-dispatcher flatpak uwsm brightnessctl acpi pacman-contrib python-pywal \
   yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc sxiv rsync fastfetch htop btop \
-  firefox speech-dispatcher flatpak kitty wl-clipboard zoxide tmux neovim luarocks lazygit fzf ripgrep ast-grep fd \
-  zathura zathura-pdf-mupdf docker bun nodejs npm yarn pnpm pgcli opencode
-flatpak install -y flathub org.telegram.desktop com.discordapp.Discord
+  kitty wl-clipboard zoxide tmux neovim luarocks lazygit fzf ripgrep ast-grep fd \
+  docker bun nodejs npm yarn pnpm pgcli opencode
+flatpak install -y flathub com.github.wwmm.easyeffects org.telegram.desktop com.discordapp.Discord
 systemctl enable thermald power-profiles-daemon NetworkManager.service bluetooth.service \
   reflector.timer cronie.service docker.service
 
