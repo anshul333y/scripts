@@ -23,7 +23,6 @@ TERM=dumb wal -i "$WALLPAPER" 2>/dev/null
 
 if pgrep -x "Hyprland" >/dev/null; then
   pkill waybar
-  pkill hyprpaper
-  hyprctl dispatch exec hyprpaper
+  awww img "$WALLPAPER" --transition-type any --transition-duration 1 --transition-fps 60
   hyprctl dispatch exec waybar
 fi
