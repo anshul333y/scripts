@@ -22,6 +22,12 @@ if command -v pacman >/dev/null 2>&1; then
   paru -Syu --noconfirm
 fi
 
+if command -v nixos-rebuild >/dev/null 2>&1; then
+  separator
+  sudo nix flake update /etc/nixos
+  sudo nixos-rebuild switch --flake /etc/nixos
+fi
+
 if command -v flatpak >/dev/null 2>&1; then
   separator
   flatpak update -y
