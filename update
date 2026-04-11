@@ -23,11 +23,16 @@ if command -v pacman >/dev/null 2>&1; then
 fi
 
 if command -v nixos-rebuild >/dev/null 2>&1; then
-  separator
   cd /etc/nixos
   sudo nix flake update
+  separator
   sudo nixos-rebuild switch --flake
   cd
+fi
+
+if command -v nix >/dev/null 2>&1; then
+  separator
+  nix profile upgrade --all
 fi
 
 if command -v flatpak >/dev/null 2>&1; then
