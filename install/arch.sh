@@ -74,7 +74,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 # installing pacman packages | installing flatpak packages | enabling systemd services
 pacman -S --noconfirm reflector cronie dash zsh starship git openssh stow 7zip unzip man-db \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra zathura zathura-pdf-mupdf \
-  hyprland awww hypridle hyprlock rofi-wayland waybar dunst polkit-gnome gnome-keyring \
+  hyprland hyprpaper hypridle hyprlock rofi-wayland waybar dunst polkit-gnome gnome-keyring \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
   firefox speech-dispatcher flatpak uwsm brightnessctl acpi pacman-contrib python-pywal \
   yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc sxiv rsync fastfetch htop btop \

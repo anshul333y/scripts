@@ -25,6 +25,7 @@ fi
 
 if pgrep -f "Hyprland" >/dev/null; then
   pkill waybar
-  awww img "$WALLPAPER" --transition-type any --transition-duration 1 --transition-fps 60
+  pkill hyprpaper
+  hyprctl dispatch exec hyprpaper
   hyprctl dispatch exec waybar
 fi
