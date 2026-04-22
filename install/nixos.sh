@@ -27,6 +27,9 @@ git clone https://github.com/anshul333y/nixos /mnt/etc/nixos
 # nixos-install
 nixos-install --flake /mnt/etc/nixos#nixos --no-root-passwd
 
+#part2
+printf '\033c'
+
 # set root and user passwords
 username=anshul333y
 root_pass=your_root_password
@@ -34,5 +37,40 @@ user_pass=your_user_password
 nixos-enter --root /mnt --command "bash -s" <<EOF
 echo "root:$root_pass" | chpasswd
 echo "$username:$user_pass" | chpasswd
+EOF
+
+#part3
+printf '\033c'
+
+nixos-enter --root /mnt --command "su - $username -c 'bash -s'" <<'EOF'
+# creating user-dirs | installing dotfiles
+cd $HOME
+mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
+mkdir -p ~/.cache/zsh ~/.config/tmux/plugins ~/.local/state/zsh ~/.local/share/mpd
+git clone https://github.com/anshul333y/.dots.git ~/.dots
+git clone https://github.com/anshul333y/scripts.git ~/.local/bin
+cd ~/.dots && stow --adopt . && cd
+git clone https://github.com/anshul333y/nvim ~/.config/nvim
+echo "*" >>~/.config/tmux/plugins/.gitignore
+ln -s ~/.config/custom/user.js ~/.config/mozilla/firefox/*.default-release
+echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
+dconf load / <~/.config/custom/gnome.dconf
+powerprofilesctl set performance
+
+# installing oh-my-zsh with plugins
+export ZSH="$HOME/.config/oh-my-zsh"
+export ZSH_CUSTOM="$HOME/.config/oh-my-zsh/custom"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM}/plugins/zsh-history-substring-search
+git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM}/plugins/you-should-use
+
+# installing font | post install steps
+curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip"
+7z x ~/dl/font.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font.zip
+mv ~/.gnupg ~/.local/share/gnupg
+mv ~/.cargo ~/.local/share/cargo
+rm -rf ~/.bash* ~/.zshrc
 EOF
 exit
