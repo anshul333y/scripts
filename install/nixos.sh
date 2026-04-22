@@ -26,4 +26,11 @@ git clone https://github.com/anshul333y/nixos /mnt/etc/nixos
 
 # nixos-install
 nixos-install --flake /mnt/etc/nixos#nixos --no-root-passwd
+
+# set root and user passwords
+nixos-enter --root /mnt
+root_pass=your_root_password
+user_pass=your_user_password
+echo "root:$root_pass" | chpasswd
+echo "$username:$user_pass" | chpasswd
 exit
