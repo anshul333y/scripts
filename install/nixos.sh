@@ -10,7 +10,7 @@ home=/dev/nvme0n1p3
 swap=/dev/nvme0n1p4
 
 mkfs.fat -F 32 -n boot $efi
-mkfs.ext4 -F -L arch $root
+mkfs.ext4 -F -L nixos $root
 mkfs.ext4 -F -L anshul333y $home
 mkswap -L swap $swap
 
@@ -22,8 +22,8 @@ mount $home /mnt/home
 swapon $swap
 
 # nixos-generate-config
-nixos-generate-config --root /mnt
+git clone https://github.com/anshul333y/nixos /mnt/etc/nixos
 
 # nixos-install
-nixos-install --no-root-passwd
+nixos-install --flake /mnt/etc/nixos#nixos --no-root-passwd
 exit
