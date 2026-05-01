@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+SSID="DTU-WiFIe"
+INTERVAL=30
+
+while true; do
+  if ! nmcli -t -f NAME connection show --active | grep -q "^${SSID}$"; then
+    echo "[$(date '+%H:%M:%S')] Not connected to '$SSID'. Reconnecting..."
+    nmcli device wifi connect "$SSID"
+  else
+    echo "[$(date '+%H:%M:%S')] Connected to '$SSID'."
+  fi
+  sleep "$INTERVAL"
+done
