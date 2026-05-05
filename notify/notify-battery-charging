@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # Send a notification when the laptop is plugged in/unplugged
 # Add the following to /etc/udev/rules.d/power.rules (replace USERNAME with your user)

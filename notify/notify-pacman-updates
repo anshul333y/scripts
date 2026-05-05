@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # Waybar update check script using checkupdates and paru
 # Requires: pacman-contrib, paru

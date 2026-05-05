@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # Send a notification if the laptop battery is either low or is fully charged.
 # */5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert
