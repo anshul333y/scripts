@@ -36,7 +36,7 @@ genfstab -U /mnt >>/mnt/etc/fstab
 # run second stage of installer inside chroot
 sed '1,/^#part2$/d' $(basename $0) >/mnt/arch2.sh
 chmod +x /mnt/arch2.sh
-arch-chroot /mnt ./arch2.sh
+arch-chroot /mnt /arch2.sh
 exit
 
 #part2
@@ -108,7 +108,7 @@ echo 'ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{onl
 
 # run third stage of installer as user
 arch3_path=/home/$username/arch3.sh
-sed '1,/^#part3$/d' arch2.sh >$arch3_path
+sed '1,/^#part3$/d' /arch2.sh >$arch3_path
 chown $username:$username $arch3_path
 chmod +x $arch3_path
 su -c $arch3_path -s /bin/sh $username
