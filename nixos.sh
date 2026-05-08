@@ -27,22 +27,33 @@ git clone https://github.com/anshul333y/nixos /mnt/etc/nixos
 # nixos-install
 nixos-install --flake /mnt/etc/nixos#nixos --no-root-passwd
 
+# run second stage of installer inside chroot
+sed '1,/^#part2$/d' $(basename $0) >/mnt/nixos2.sh
+chmod +x /mnt/nixos2.sh
+nixos-enter --root /mnt --command "/nixos2.sh"
+exit
+
 #part2
 printf '\033c'
 
 # set root and user passwords
-username=anshul333y
+username=nixos
 root_pass=your_root_password
 user_pass=your_user_password
-nixos-enter --root /mnt --command "bash -s" <<EOF
 echo "root:$root_pass" | chpasswd
 echo "$username:$user_pass" | chpasswd
-EOF
+
+# run third stage of installer as user
+nixos3_path=/home/$username/nixos3.sh
+sed '1,/^#part3$/d' /nixos2.sh >$nixos3_path
+chown $username:$username $nixos3_path
+chmod +x $nixos3_path
+su -c $nixos3_path -s /bin/sh $username
+exit
 
 #part3
 printf '\033c'
 
-nixos-enter --root /mnt --command "su - $username -c 'bash -s'" <<'EOF'
 # creating user-dirs | installing dotfiles
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
@@ -72,5 +83,4 @@ curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/down
 mv ~/.gnupg ~/.local/share/gnupg
 mv ~/.cargo ~/.local/share/cargo
 rm -rf ~/.bash* ~/.zshrc
-EOF
 exit
