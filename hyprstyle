@@ -20,12 +20,13 @@ fi
   source ~/.local/venvs/pywal/bin/activate
   gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
   gsettings set org.gnome.desktop.background picture-uri-dark "file://$WALLPAPER"
-  TERM=dumb wal -i "$WALLPAPER" 2>/dev/null
+  TERM=dumb wal -i "$WALLPAPER"
 } 2>/dev/null
 
 if pgrep -f "Hyprland" >/dev/null; then
   pkill waybar
   pkill hyprpaper
-  hyprctl dispatch exec hyprpaper
-  hyprctl dispatch exec waybar
+  hyprctl dispatch 'hl.dsp.exec_cmd("hyprpaper")'
+  hyprctl dispatch 'hl.dsp.exec_cmd("waybar")'
+  hyprctl reload
 fi
