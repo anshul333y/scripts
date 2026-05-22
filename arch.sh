@@ -74,7 +74,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 # installing pacman packages | installing flatpak packages | enabling systemd services
 pacman -S --noconfirm reflector cronie dash zsh starship stow 7zip unzip man-db ffmpeg imagemagick \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra zathura zathura-pdf-mupdf \
-  hyprland hyprpaper hypridle hyprlock rofi-wayland waybar dunst polkit-gnome gnome-keyring \
+  hyprland hyprpaper hypridle hyprlock hyprshot rofi-wayland waybar dunst polkit-gnome gnome-keyring \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
   firefox speech-dispatcher flatpak uwsm brightnessctl acpi pacman-contrib python-pywal \
   yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc sxiv rsync fastfetch \
@@ -149,7 +149,7 @@ curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/down
 7z x ~/dl/font.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font.zip
 git clone https://aur.archlinux.org/paru.git ~/dl/paru
 cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
-paru -S --noconfirm hyprshot-git wlogout google-chrome brave-bin
+paru -S --noconfirm wlogout google-chrome brave-bin
 mv ~/.gnupg ~/.local/share/gnupg
 mv ~/.cargo ~/.local/share/cargo
 rm -rf ~/.bash* ~/.zshrc
