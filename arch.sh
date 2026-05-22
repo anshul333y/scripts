@@ -142,12 +142,14 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}
 git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM}/plugins/zsh-history-substring-search
 git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM}/plugins/you-should-use
 
-# installing font | installing aur helper paru | installing aur packages | post install steps
+# installing font | installing aur helper paru | installing aur packages
 curl -Lo ~/dl/font.zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip"
 7z x ~/dl/font.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font.zip
 git clone https://aur.archlinux.org/paru.git ~/dl/paru
 cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
 paru -S --noconfirm wlogout google-chrome brave-bin
+
+# post install steps
 mv ~/.gnupg ~/.local/share/gnupg
 mv ~/.cargo ~/.local/share/cargo
 rm -rf ~/.bash* ~/.zshrc

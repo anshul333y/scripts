@@ -112,7 +112,9 @@ sudo usermod -aG docker $USER
 
 # post install steps
 python3 -m venv ~/.local/venvs/pywal && source ~/.local/venvs/pywal/bin/activate && pip install pywal
+mv ~/Documents/* ~/docs/ && mv ~/Downloads/* ~/dl/ && mv ~/Music/* ~/music/ && mv ~/Pictures/* ~/pics/ && mv ~/Public/* ~/pub/ && mv ~/Videos/* ~/vids/
 rm -rf ~/Desktop ~/Documents ~/Downloads ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
 mv ~/.gnupg ~/.local/share/gnupg
+mv ~/.cargo ~/.local/share/cargo
 rm -rf ~/.bash* ~/.zshrc
 exit
