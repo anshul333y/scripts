@@ -72,7 +72,7 @@ sed -i 's/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/defa
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # installing pacman packages | installing flatpak packages | enabling systemd services
-pacman -S --noconfirm reflector cronie dash zsh starship stow 7zip unzip man-db ffmpeg imagemagick \
+pacman -S --noconfirm reflector cronie zsh starship stow 7zip unzip man-db ffmpeg imagemagick \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra zathura zathura-pdf-mupdf \
   hyprland hyprpaper hypridle hyprlock hyprshot rofi-wayland waybar dunst polkit-gnome gnome-keyring \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
@@ -92,9 +92,7 @@ user_pass=your_user_password
 echo "root:$root_pass" | chpasswd
 echo "$username:$user_pass" | chpasswd
 
-# replace default shell with dash | configure sudo | configure zsh | configure reflector
-rm /bin/sh
-ln -s dash /bin/sh
+# configure sudo | configure zsh | configure reflector
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 echo 'export ZDOTDIR="$HOME/.config/zsh"' >>/etc/zsh/zshenv
 sed -i "s/5/30/" /etc/xdg/reflector/reflector.conf
