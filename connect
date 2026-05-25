@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+wifi=$1
+bluetooth=$2
+
+# wifi
+nmcli device wifi rescan
+nmcli -ask device wifi connect $wifi
+
+# bluetooth
+bluetoothctl scan on
+bluetoothctl trust $bluetooth
+bluetoothctl connect $bluetooth
