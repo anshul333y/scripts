@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env dash
 
 # Use brightnessctl to naturally adjust laptop screen brightness and send a notification
 
