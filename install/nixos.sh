@@ -22,7 +22,9 @@ mount $home /mnt/home
 swapon $swap
 
 # nixos-generate-config
-git clone https://github.com/anshul333y/nixos /mnt/etc/nixos
+git clone https://github.com/anshul333y/.dots
+mkdir -p /mnt/etc/nixos
+mv .dots/.config/nixos/* /mnt/etc/nixos
 
 # nixos-install
 nixos-install --flake /mnt/etc/nixos#nixos --no-root-passwd
