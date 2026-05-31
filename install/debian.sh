@@ -76,8 +76,7 @@ printf '\033c'
 # creating user-dirs | installing dotfiles
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
-mkdir -p ~/.cache/zsh ~/.local/state/zsh ~/.local/share/mpd
-git clone https://github.com/anshul333y/nvim ~/.config/nvim
+mkdir -p ~/.config ~/.cache/zsh ~/.local/state/zsh ~/.local/share/mpd
 git clone https://github.com/anshul333y/.dots.git ~/.dots
 git clone https://github.com/anshul333y/scripts.git ~/.local/bin
 rm -rf ~/.config/user-dirs.dirs && cd ~/.dots && stow --adopt . && cd

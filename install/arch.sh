@@ -17,7 +17,7 @@ swap=/dev/nvme0n1p4
 
 mkfs.fat -F 32 -n boot $boot
 mkfs.ext4 -F -L arch $root
-mkfs.ext4 -F -L anshul333y $home
+# mkfs.ext4 -F -L anshul333y $home
 mkswap -L swap $swap
 
 mount $root /mnt
@@ -72,12 +72,12 @@ sed -i 's/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/defa
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # installing pacman packages | installing flatpak packages | enabling systemd services
-pacman -S --noconfirm reflector cronie zsh starship stow 7zip unzip man-db ffmpeg imagemagick \
+pacman -S --noconfirm reflector cronie dash zsh starship stow 7zip unzip man-db ffmpeg imagemagick \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra zathura zathura-pdf-mupdf \
   hyprland hyprpaper hypridle hyprlock hyprshot rofi-wayland waybar dunst polkit-gnome gnome-keyring \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
   firefox speech-dispatcher flatpak uwsm brightnessctl acpi pacman-contrib python-pywal \
-  yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc sxiv rsync fastfetch \
+  yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc cava sxiv rsync fastfetch \
   kitty wl-clipboard zoxide eza bat tmux neovim luarocks lazygit fzf ripgrep ast-grep fd htop btop \
   base-devel rust bun nodejs npm yarn pnpm pgcli openssh git github-cli docker docker-compose
 flatpak install -y flathub com.github.wwmm.easyeffects org.telegram.desktop com.discordapp.Discord
@@ -122,8 +122,7 @@ printf '\033c'
 # creating user-dirs | installing dotfiles
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
-mkdir -p ~/.cache/zsh ~/.local/state/zsh ~/.local/share/mpd
-git clone https://github.com/anshul333y/nvim ~/.config/nvim
+mkdir -p ~/.config ~/.cache/zsh ~/.local/state/zsh ~/.local/share/mpd
 git clone https://github.com/anshul333y/.dots.git ~/.dots
 git clone https://github.com/anshul333y/scripts.git ~/.local/bin
 rm -rf ~/.config/user-dirs.dirs && cd ~/.dots && stow --adopt . && cd
