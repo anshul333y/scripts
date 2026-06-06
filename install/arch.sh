@@ -74,7 +74,8 @@ grub-mkconfig -o /boot/grub/grub.cfg
 # installing pacman packages | installing flatpak packages | enabling systemd services
 pacman -S --noconfirm reflector cronie dash zsh starship stow 7zip unzip man-db ffmpeg imagemagick \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra zathura zathura-pdf-mupdf \
-  hyprland hyprpaper hypridle hyprlock hyprshot rofi-wayland waybar dunst polkit-gnome gnome-keyring \
+  hyprland hyprpaper hypridle hyprlock hyprshot hyprshutdown hyprpwcenter hyprpolkitagent \
+  hyprland-qt-support nwg-look rofi-wayland waybar dunst gnome-keyring \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
   firefox speech-dispatcher flatpak uwsm brightnessctl acpi pacman-contrib python-pywal \
   yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc cava sxiv rsync fastfetch \
@@ -82,7 +83,7 @@ pacman -S --noconfirm reflector cronie dash zsh starship stow 7zip unzip man-db 
   base-devel rust bun nodejs npm yarn pnpm pgcli openssh git github-cli docker docker-compose
 flatpak install -y flathub com.github.wwmm.easyeffects org.telegram.desktop com.discordapp.Discord
 systemctl enable thermald power-profiles-daemon NetworkManager.service bluetooth.service \
-  reflector.timer cronie.service docker.service
+  reflector.timer cronie.service
 
 # create a new user and add to wheel group | set root and user passwords
 username=anshul333y
@@ -99,6 +100,7 @@ sed -i "s/5/30/" /etc/xdg/reflector/reflector.conf
 sed -i "s/age/rate/" /etc/xdg/reflector/reflector.conf
 
 # auto-login | unlock and auto-start the gnome keyring at login | charging and discharging notifications
+sed -i "s/#HandlePowerKey=poweroff/HandlePowerKey=ignore/" /etc/systemd/logind.conf
 mkdir -p /etc/systemd/system/getty@tty1.service.d
 echo "[Service]" >>/etc/systemd/system/getty@tty1.service.d/autologin.conf
 echo "ExecStart=" >>/etc/systemd/system/getty@tty1.service.d/autologin.conf
@@ -147,7 +149,7 @@ curl -Lo ~/dl/font2.zip "https://github.com/subframe7536/maple-font/releases/dow
 7z x ~/dl/font1.zip -o$HOME/dl/fonts && 7z x ~/dl/font2.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font1.zip ~/dl/font2.zip
 git clone https://aur.archlinux.org/paru.git ~/dl/paru
 cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
-paru -S --noconfirm wlogout google-chrome brave-bin
+paru -S --noconfirm hyprqt6engine wlogout google-chrome brave-bin
 
 # post install steps
 mv ~/.gnupg ~/.local/share/gnupg
