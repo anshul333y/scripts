@@ -2,6 +2,12 @@
 
 # anshul333y's wallhaven script
 
+ENV_FILE="$XDG_DATA_HOME/envs/wallhaven"
+source "$ENV_FILE"
+API_KEY="$WALLHAVEN_API_KEY"
+
+USERNAME="anshul333y"
+
 SAVE_DIR="$HOME/pics/save"
 WALLPAPER_DIR="$HOME/pics/wall"
 CATEGORIES="111"
@@ -10,53 +16,135 @@ ORDER="desc"
 # TOPRANGE="1y"
 MAX_PAGES=6
 
-# Prompt for sorting
-echo "Choose sorting option:"
-echo "1) date_added  2) relevance  3) random  4) views  5) favorites  6) toplist  7)hot"
-
-read -p "Enter choice [1-7]: " sort_choice
-case "$sort_choice" in
-1) SORTING="date_added" ;;
-2) SORTING="relevance" ;;
-3) SORTING="random" ;;
-4) SORTING="views" ;;
-5) SORTING="favorites" ;;
-6) SORTING="toplist" ;;
-7) SORTING="hot" ;;
-*)
-  echo "Invalid choice. Defaulting to 'date_added'."
-  SORTING="date_added"
-  ;;
-esac
-
 mkdir -p "$SAVE_DIR"
 mkdir -p "$WALLPAPER_DIR"
-
 IMAGE_URLS=()
 PAGE=1
 
-echo "📡 Fetching wallpapers..."
+# Prompt for source
+echo "Choose source:"
+echo "1) Search"
+echo "2) Collection"
+echo
 
-while [ "$PAGE" -le "$MAX_PAGES" ]; do
-  RESPONSE=$(curl -sG "https://wallhaven.cc/api/v1/search" \
-    --data-urlencode "apikey=$API_KEY" \
-    --data-urlencode "categories=$CATEGORIES" \
-    --data-urlencode "purity=$PURITY" \
-    --data-urlencode "sorting=$SORTING" \
-    --data-urlencode "order=$ORDER" \
-    --data-urlencode "topRange=$TOPRANGE" \
-    --data-urlencode "page=$PAGE")
+read -rp "Enter choice [1-2]: " source_choice
+case "$source_choice" in
+1)
+  # Prompt for sorting
+  echo
+  echo "Choose sorting option:"
+  echo "1) date_added  2) relevance  3) random  4) views  5) favorites  6) toplist  7)hot"
 
-  NEW_URLS=($(echo "$RESPONSE" | jq -r '.data[].path'))
+  read -rp "Enter choice [1-7]: " sort_choice
+  case "$sort_choice" in
+  1) SORTING="date_added" ;;
+  2) SORTING="relevance" ;;
+  3) SORTING="random" ;;
+  4) SORTING="views" ;;
+  5) SORTING="favorites" ;;
+  6) SORTING="toplist" ;;
+  7) SORTING="hot" ;;
+  *)
+    echo "Invalid choice. Defaulting to 'date_added'."
+    SORTING="date_added"
+    ;;
+  esac
 
-  if [ ${#NEW_URLS[@]} -eq 0 ]; then
-    echo "No more wallpapers found."
-    break
+  echo
+  read -rp "Search query (leave blank for none): " QUERY
+
+  echo "📡 Fetching wallpapers from search..."
+
+  while [ "$PAGE" -le "$MAX_PAGES" ]; do
+    RESPONSE=$(curl -sG "https://wallhaven.cc/api/v1/search" \
+      --data-urlencode "apikey=$API_KEY" \
+      --data-urlencode "q=$QUERY" \
+      --data-urlencode "categories=$CATEGORIES" \
+      --data-urlencode "purity=$PURITY" \
+      --data-urlencode "sorting=$SORTING" \
+      --data-urlencode "order=$ORDER" \
+      --data-urlencode "topRange=$TOPRANGE" \
+      --data-urlencode "page=$PAGE")
+
+    mapfile -t NEW_URLS < <(
+      echo "$RESPONSE" | jq -r '.data[].path'
+    )
+
+    [ ${#NEW_URLS[@]} -eq 0 ] && break
+
+    IMAGE_URLS+=("${NEW_URLS[@]}")
+    ((PAGE++))
+  done
+  ;;
+
+2)
+  echo
+  echo "📚 Fetching collections..."
+
+  COLLECTIONS=$(curl -sG \
+    "https://wallhaven.cc/api/v1/collections/$USERNAME" \
+    --data-urlencode "apikey=$API_KEY")
+
+  mapfile -t COLLECTION_NAMES < <(
+    echo "$COLLECTIONS" | jq -r '.data[].label'
+  )
+
+  mapfile -t COLLECTION_IDS < <(
+    echo "$COLLECTIONS" | jq -r '.data[].id'
+  )
+
+  if [ ${#COLLECTION_NAMES[@]} -eq 0 ]; then
+    echo "❌ No collections found."
+    exit 1
   fi
 
-  IMAGE_URLS+=("${NEW_URLS[@]}")
-  ((PAGE++))
-done
+  echo
+  echo "Available collections:"
+
+  PS3="Choose collection: "
+
+  select COLLECTION in "${COLLECTION_NAMES[@]}"; do
+    if [ -n "$COLLECTION" ]; then
+      INDEX=$((REPLY - 1))
+      ID="${COLLECTION_IDS[$INDEX]}"
+      break
+    fi
+
+    echo "Invalid selection."
+  done
+
+  echo
+  echo "Selected collection: $COLLECTION"
+
+  echo "📡 Fetching wallpapers from collection..."
+
+  while true; do
+    RESPONSE=$(curl -sG \
+      "https://wallhaven.cc/api/v1/collections/$USERNAME/$ID" \
+      --data-urlencode "apikey=$API_KEY" \
+      --data-urlencode "page=$PAGE")
+
+    mapfile -t NEW_URLS < <(
+      echo "$RESPONSE" | jq -r '.data[].path'
+    )
+
+    [ ${#NEW_URLS[@]} -eq 0 ] && break
+
+    IMAGE_URLS+=("${NEW_URLS[@]}")
+
+    LAST_PAGE=$(echo "$RESPONSE" | jq -r '.meta.last_page')
+
+    [ "$PAGE" -ge "$LAST_PAGE" ] && break
+
+    ((PAGE++))
+  done
+  ;;
+
+*)
+  echo "❌ Invalid choice."
+  exit 1
+  ;;
+esac
 
 TOTAL=${#IMAGE_URLS[@]}
 COUNT=0
@@ -81,10 +169,11 @@ for URL in "${IMAGE_URLS[@]}"; do
   echo -ne "\rProgress: [${BAR}] $PERCENT% ($COUNT/$TOTAL)"
 done
 
+echo
 echo -e "✅ Download complete! Saved to: $SAVE_DIR"
 echo "✅ Previewing wallpapers..."
 
-sxiv -t "$SAVE_DIR"/*
+nsxiv -t "$SAVE_DIR"/*
 
 echo "Moving wallpapers to final folder..."
 mv "$SAVE_DIR"/* "$WALLPAPER_DIR"
