@@ -10,7 +10,7 @@ sudo sed -i 's/GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=true/' /etc/d
 # installing apt packages | installing flatpak packages | enabling systemd services
 sudo apt install -y cronie curl zsh git stow p7zip-full unzip \
   python3-venv imagemagick \
-  mpv yt-dlp mpd mpc ncmpcpp rsync sxiv htop btop \
+  mpv yt-dlp mpd mpc ncmpcpp rsync nsxiv htop btop \
   flatpak wl-clipboard fzf ripgrep fd-find tmux gcc g++ nodejs npm
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install -y flathub com.github.wwmm.easyeffects org.telegram.desktop com.discordapp.Discord

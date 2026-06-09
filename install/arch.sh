@@ -28,7 +28,7 @@ mount $home /mnt/home
 swapon $swap
 
 # install base system | generate fstab
-pacstrap -K /mnt base linux linux-headers linux-zen linux-zen-headers linux-firmware \
+pacstrap -K /mnt base linux linux-headers linux-firmware \
   grub efibootmgr os-prober intel-ucode mesa vulkan-intel intel-media-driver thermald power-profiles-daemon \
   networkmanager dhcpcd bluez bluez-utils pipewire pipewire-pulse
 genfstab -U /mnt >>/mnt/etc/fstab
@@ -78,7 +78,7 @@ pacman -S --noconfirm reflector cronie dash zsh starship stow 7zip unzip man-db 
   hyprland-qt-support nwg-look rofi-wayland waybar dunst gnome-keyring \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
   firefox speech-dispatcher flatpak uwsm brightnessctl acpi pacman-contrib python-pywal \
-  yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc cava sxiv rsync fastfetch \
+  yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc cava nsxiv rsync fastfetch \
   kitty wl-clipboard zoxide eza bat tmux neovim luarocks lazygit fzf ripgrep ast-grep fd htop btop \
   base-devel rust bun nodejs npm yarn pnpm pgcli openssh git github-cli docker docker-compose
 flatpak install -y flathub com.github.wwmm.easyeffects org.telegram.desktop com.discordapp.Discord
