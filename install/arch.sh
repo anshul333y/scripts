@@ -16,16 +16,25 @@ home=/dev/nvme0n1p3
 swap=/dev/nvme0n1p4
 
 mkfs.fat -F 32 -n boot $boot
-mkfs.ext4 -F -L arch $root
-# mkfs.ext4 -F -L anshul333y $home
-mkswap -L swap $swap
 
-mount $root /mnt
-mkdir -p /mnt/boot
-mkdir -p /mnt/home
+cryptsetup luksFormat --type luks2 $root
+cryptsetup luksOpen $root cryptroot
+mkfs.ext4 -F -L arch /dev/mapper/cryptroot
+
+# cryptsetup luksFormat --type luks2 $home
+cryptsetup luksOpen $home crypthome
+# mkfs.ext4 -F -L anshul333y /dev/mapper/crypthome
+
+cryptsetup luksFormat --type luks2 $swap
+cryptsetup luksOpen $swap cryptswap
+mkswap -L swap /dev/mapper/cryptswap
+
+# mount
+mount /dev/mapper/cryptroot /mnt
+mkdir -p /mnt/boot /mnt/home
 mount $boot /mnt/boot
-mount $home /mnt/home
-swapon $swap
+mount /dev/mapper/crypthome /mnt/home
+swapon /dev/mapper/cryptswap
 
 # install base system | generate fstab
 pacstrap -K /mnt base linux linux-headers linux-firmware \
@@ -53,7 +62,7 @@ echo "KEYMAP=us" >/etc/vconsole.conf
 # configure pacman and mkinitcpio | set hostname | configure hosts file | generate initramfs image
 sed -i "s/ParallelDownloads = 5/ParallelDownloads = 15/" /etc/pacman.conf
 sed -i "s/#Color/Color/" /etc/pacman.conf
-sed -i "s/filesystems/filesystems resume/" /etc/mkinitcpio.conf
+sed -i "s/filesystems/encrypt filesystems resume/" /etc/mkinitcpio.conf
 hostname=archlinux
 echo $hostname >/etc/hostname
 echo "127.0.0.1       localhost" >>/etc/hosts
@@ -62,20 +71,22 @@ echo "127.0.1.1       $hostname.localdomain $hostname" >>/etc/hosts
 mkinitcpio -P
 
 # install and configure grub with custom boot params
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch
+root_uuid=$(blkid -s UUID -o value /dev/nvme0n1p2)
 sed -i 's/GRUB_DEFAULT=0/GRUB_DEFAULT=saved/' /etc/default/grub
 sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/' /etc/default/grub
 sed -i 's/quiet/pci=noaer/' /etc/default/grub
+sed -i "s|GRUB_CMDLINE_LINUX=\"\"|GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=${root_uuid}:cryptroot root=/dev/mapper/cryptroot\"|" /etc/default/grub
 sed -i 's/GRUB_TIMEOUT_STYLE=menu/GRUB_TIMEOUT_STYLE=hidden/' /etc/default/grub
 sed -i 's/#GRUB_SAVEDEFAULT=true/GRUB_SAVEDEFAULT=true/' /etc/default/grub
 sed -i 's/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # installing pacman packages | installing flatpak packages | enabling systemd services
 pacman -S --noconfirm reflector cronie dash zsh starship stow 7zip unzip man-db ffmpeg imagemagick \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra zathura zathura-pdf-mupdf \
   hyprland hyprpaper hypridle hyprlock hyprshot hyprshutdown hyprpwcenter hyprpolkitagent \
-  hyprland-qt-support nwg-look rofi-wayland waybar dunst gnome-keyring \
+  hyprland-qt-support nwg-look rofi-wayland waybar dunst gnome-keyring xorg-xrdb \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
   firefox speech-dispatcher flatpak uwsm brightnessctl acpi pacman-contrib python-pywal \
   yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc cava nsxiv rsync fastfetch \
