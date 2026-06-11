@@ -14,18 +14,20 @@ boot=/dev/nvme0n1p1
 root=/dev/nvme0n1p2
 home=/dev/nvme0n1p3
 swap=/dev/nvme0n1p4
+encrypt_pass=your_encrypt_password
 
 mkfs.fat -F 32 -n boot $boot
 
-cryptsetup luksFormat --type luks2 $root
-cryptsetup luksOpen $root cryptroot
+cryptsetup -q luksFormat --type luks2 $root
+echo "$encrypt_pass" | cryptsetup luksOpen --batch-mode $root cryptroot
 mkfs.ext4 -F -L arch /dev/mapper/cryptroot
 
-# cryptsetup luksFormat --type luks2 $home
-cryptsetup luksOpen $home crypthome
+# cryptsetup -q luksFormat --type luks2 $home
+echo "$encrypt_pass" | cryptsetup luksOpen --batch-mode $home crypthome
 # mkfs.ext4 -F -L anshul333y /dev/mapper/crypthome
 
-cryptsetup luksFormat --type luks2 $swap
+cryptsetup -q luksFormat --type luks2 $swap
+echo "$encrypt_pass" | cryptsetup luksOpen --batch-mode $swap cryptswap
 cryptsetup luksOpen $swap cryptswap
 mkswap -L swap /dev/mapper/cryptswap
 
@@ -98,11 +100,23 @@ systemctl enable thermald power-profiles-daemon NetworkManager.service bluetooth
 
 # create a new user and add to wheel group | set root and user passwords
 username=anshul333y
-useradd -m -G wheel -s /bin/zsh $username
 root_pass=your_root_password
 user_pass=your_user_password
+useradd -m -G wheel -s /bin/zsh $username
 echo "root:$root_pass" | chpasswd
 echo "$username:$user_pass" | chpasswd
+
+# auto-unlock home and swap at boot using keyfiles
+encrypt_pass=your_encrypt_password
+mkdir -p /etc/cryptsetup-keys.d
+dd if=/dev/urandom bs=512 count=1 of=/etc/cryptsetup-keys.d/crypthome.key
+dd if=/dev/urandom bs=512 count=1 of=/etc/cryptsetup-keys.d/cryptswap.key
+chmod 600 /etc/cryptsetup-keys.d/crypthome.key
+chmod 600 /etc/cryptsetup-keys.d/cryptswap.key
+echo "$encrypt_pass" | cryptsetup luksAddKey --batch-mode /dev/nvme0n1p3 /etc/cryptsetup-keys.d/crypthome.key
+echo "$encrypt_pass" | cryptsetup luksAddKey --batch-mode /dev/nvme0n1p4 /etc/cryptsetup-keys.d/cryptswap.key
+echo "crypthome  UUID=$(blkid -s UUID -o value /dev/nvme0n1p3)  /etc/cryptsetup-keys.d/crypthome.key  luks" >> /etc/crypttab
+echo "cryptswap  UUID=$(blkid -s UUID -o value /dev/nvme0n1p4)  /etc/cryptsetup-keys.d/cryptswap.key  luks" >> /etc/crypttab
 
 # configure sudo | configure zsh | configure reflector
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
