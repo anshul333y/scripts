@@ -3,19 +3,20 @@
 #part1
 printf '\033c'
 
+# system configuration variables
+encrypt_pass=your_encrypt_password
+boot=/dev/nvme0n1p1
+root=/dev/nvme0n1p2
+home=/dev/nvme0n1p3
+swap=/dev/nvme0n1p4
+
 # configure pacman | update keyring | set keyboard layout to us | enable network time sync
 sed -i "s/ParallelDownloads = 5/ParallelDownloads = 13/" /etc/pacman.conf
 pacman --noconfirm -Sy archlinux-keyring
 loadkeys us
 timedatectl set-ntp true
 
-# partition, format and mount partitions
-boot=/dev/nvme0n1p1
-root=/dev/nvme0n1p2
-home=/dev/nvme0n1p3
-swap=/dev/nvme0n1p4
-encrypt_pass=your_encrypt_password
-
+# format and mount partitions
 mkfs.fat -F 32 -n boot $boot
 
 echo "$encrypt_pass" | cryptsetup -q luksFormat --batch-mode --type luks2 $root
@@ -53,6 +54,16 @@ exit
 #part2
 printf '\033c'
 
+# system configuration variables
+encrypt_pass=your_encrypt_password
+root_pass=your_root_password
+user_pass=your_user_password
+boot=/dev/nvme0n1p1
+root=/dev/nvme0n1p2
+home=/dev/nvme0n1p3
+swap=/dev/nvme0n1p4
+username=anshul333y
+
 # set system timezone | set hardware clock | enable english locale | set system-wide locale and keymap
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 hwclock --systohc
@@ -73,7 +84,7 @@ echo "127.0.1.1       $hostname.localdomain $hostname" >>/etc/hosts
 mkinitcpio -P
 
 # install and configure grub with custom boot params
-root_uuid=$(blkid -s UUID -o value /dev/nvme0n1p2)
+root_uuid=$(blkid -s UUID -o value $root)
 sed -i 's/GRUB_DEFAULT=0/GRUB_DEFAULT=saved/' /etc/default/grub
 sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/' /etc/default/grub
 sed -i 's/quiet/pci=noaer/' /etc/default/grub
@@ -99,24 +110,20 @@ systemctl enable thermald power-profiles-daemon NetworkManager.service bluetooth
   reflector.timer cronie.service
 
 # create a new user and add to wheel group | set root and user passwords
-username=anshul333y
-root_pass=your_root_password
-user_pass=your_user_password
 useradd -m -G wheel -s /bin/zsh $username
 echo "root:$root_pass" | chpasswd
 echo "$username:$user_pass" | chpasswd
 
 # auto-unlock home and swap at boot using keyfiles
-encrypt_pass=your_encrypt_password
 mkdir -p /etc/cryptsetup-keys.d
 dd if=/dev/urandom bs=512 count=1 of=/etc/cryptsetup-keys.d/crypthome.key
 dd if=/dev/urandom bs=512 count=1 of=/etc/cryptsetup-keys.d/cryptswap.key
 chmod 600 /etc/cryptsetup-keys.d/crypthome.key
 chmod 600 /etc/cryptsetup-keys.d/cryptswap.key
-echo "$encrypt_pass" | cryptsetup luksAddKey --batch-mode /dev/nvme0n1p3 /etc/cryptsetup-keys.d/crypthome.key
-echo "$encrypt_pass" | cryptsetup luksAddKey --batch-mode /dev/nvme0n1p4 /etc/cryptsetup-keys.d/cryptswap.key
-echo "crypthome  UUID=$(blkid -s UUID -o value /dev/nvme0n1p3)  /etc/cryptsetup-keys.d/crypthome.key  luks" >>/etc/crypttab
-echo "cryptswap  UUID=$(blkid -s UUID -o value /dev/nvme0n1p4)  /etc/cryptsetup-keys.d/cryptswap.key  luks" >>/etc/crypttab
+echo "$encrypt_pass" | cryptsetup luksAddKey --batch-mode $home /etc/cryptsetup-keys.d/crypthome.key
+echo "$encrypt_pass" | cryptsetup luksAddKey --batch-mode $swap /etc/cryptsetup-keys.d/cryptswap.key
+echo "crypthome  UUID=$(blkid -s UUID -o value $home)  /etc/cryptsetup-keys.d/crypthome.key  luks" >>/etc/crypttab
+echo "cryptswap  UUID=$(blkid -s UUID -o value $swap)  /etc/cryptsetup-keys.d/cryptswap.key  luks" >>/etc/crypttab
 
 # configure sudo | configure zsh | configure reflector
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
