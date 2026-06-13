@@ -4,7 +4,7 @@
 printf '\033c'
 
 # configure pacman | update keyring | set keyboard layout to us | enable network time sync
-sed -i "s/ParallelDownloads = 5/ParallelDownloads = 15/" /etc/pacman.conf
+sed -i "s/ParallelDownloads = 5/ParallelDownloads = 13/" /etc/pacman.conf
 pacman --noconfirm -Sy archlinux-keyring
 loadkeys us
 timedatectl set-ntp true
@@ -18,15 +18,15 @@ encrypt_pass=your_encrypt_password
 
 mkfs.fat -F 32 -n boot $boot
 
-cryptsetup -q luksFormat --type luks2 $root
+echo "$encrypt_pass" | cryptsetup -q luksFormat --batch-mode --type luks2 $root
 echo "$encrypt_pass" | cryptsetup luksOpen --batch-mode $root cryptroot
 mkfs.ext4 -F -L arch /dev/mapper/cryptroot
 
-# cryptsetup -q luksFormat --type luks2 $home
+# echo "$encrypt_pass" | cryptsetup -q luksFormat --batch-mode --type luks2 $home
 echo "$encrypt_pass" | cryptsetup luksOpen --batch-mode $home crypthome
 # mkfs.ext4 -F -L anshul333y /dev/mapper/crypthome
 
-cryptsetup -q luksFormat --type luks2 $swap
+echo "$encrypt_pass" | cryptsetup -q luksFormat --batch-mode --type luks2 $swap
 echo "$encrypt_pass" | cryptsetup luksOpen --batch-mode $swap cryptswap
 cryptsetup luksOpen $swap cryptswap
 mkswap -L swap /dev/mapper/cryptswap
@@ -62,9 +62,9 @@ echo "LANG=en_US.UTF-8" >/etc/locale.conf
 echo "KEYMAP=us" >/etc/vconsole.conf
 
 # configure pacman and mkinitcpio | set hostname | configure hosts file | generate initramfs image
-sed -i "s/ParallelDownloads = 5/ParallelDownloads = 15/" /etc/pacman.conf
+sed -i "s/ParallelDownloads = 5/ParallelDownloads = 13/" /etc/pacman.conf
 sed -i "s/#Color/Color/" /etc/pacman.conf
-sed -i "s/filesystems/encrypt filesystems resume/" /etc/mkinitcpio.conf
+sed -i "s/filesystems/sd-encrypt filesystems resume/" /etc/mkinitcpio.conf
 hostname=archlinux
 echo $hostname >/etc/hostname
 echo "127.0.0.1       localhost" >>/etc/hosts
@@ -77,7 +77,7 @@ root_uuid=$(blkid -s UUID -o value /dev/nvme0n1p2)
 sed -i 's/GRUB_DEFAULT=0/GRUB_DEFAULT=saved/' /etc/default/grub
 sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/' /etc/default/grub
 sed -i 's/quiet/pci=noaer/' /etc/default/grub
-sed -i "s|GRUB_CMDLINE_LINUX=\"\"|GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=${root_uuid}:cryptroot root=/dev/mapper/cryptroot\"|" /etc/default/grub
+sed -i "s|GRUB_CMDLINE_LINUX=\"\"|GRUB_CMDLINE_LINUX=\"rd.luks.name=${root_uuid}=cryptroot\"|" /etc/default/grub
 sed -i 's/GRUB_TIMEOUT_STYLE=menu/GRUB_TIMEOUT_STYLE=hidden/' /etc/default/grub
 sed -i 's/#GRUB_SAVEDEFAULT=true/GRUB_SAVEDEFAULT=true/' /etc/default/grub
 sed -i 's/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
@@ -115,13 +115,13 @@ chmod 600 /etc/cryptsetup-keys.d/crypthome.key
 chmod 600 /etc/cryptsetup-keys.d/cryptswap.key
 echo "$encrypt_pass" | cryptsetup luksAddKey --batch-mode /dev/nvme0n1p3 /etc/cryptsetup-keys.d/crypthome.key
 echo "$encrypt_pass" | cryptsetup luksAddKey --batch-mode /dev/nvme0n1p4 /etc/cryptsetup-keys.d/cryptswap.key
-echo "crypthome  UUID=$(blkid -s UUID -o value /dev/nvme0n1p3)  /etc/cryptsetup-keys.d/crypthome.key  luks" >> /etc/crypttab
-echo "cryptswap  UUID=$(blkid -s UUID -o value /dev/nvme0n1p4)  /etc/cryptsetup-keys.d/cryptswap.key  luks" >> /etc/crypttab
+echo "crypthome  UUID=$(blkid -s UUID -o value /dev/nvme0n1p3)  /etc/cryptsetup-keys.d/crypthome.key  luks" >>/etc/crypttab
+echo "cryptswap  UUID=$(blkid -s UUID -o value /dev/nvme0n1p4)  /etc/cryptsetup-keys.d/cryptswap.key  luks" >>/etc/crypttab
 
 # configure sudo | configure zsh | configure reflector
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 echo 'export ZDOTDIR="$HOME/.config/zsh"' >>/etc/zsh/zshenv
-sed -i "s/5/30/" /etc/xdg/reflector/reflector.conf
+sed -i "s/5/13/" /etc/xdg/reflector/reflector.conf
 sed -i "s/age/rate/" /etc/xdg/reflector/reflector.conf
 
 # auto-login | unlock and auto-start the gnome keyring at login | charging and discharging notifications
