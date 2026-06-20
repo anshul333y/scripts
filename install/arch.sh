@@ -153,6 +153,13 @@ exit
 #part3
 printf '\033c'
 
+# system configuration variables
+export GNUPGHOME="$HOME/.local/share/gnupg"
+export CARGO_HOME="$HOME/.local/share/cargo"
+export ZDOTDIR="$HOME/.config/zsh"
+export ZSH="$HOME/.config/oh-my-zsh"
+export ZSH_CUSTOM="$HOME/.config/oh-my-zsh/custom"
+
 # creating user-dirs | installing dotfiles
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
@@ -167,8 +174,6 @@ dconf load / <~/.config/custom/gnome.dconf
 powerprofilesctl set performance
 
 # installing oh-my-zsh with plugins
-export ZSH="$HOME/.config/oh-my-zsh"
-export ZSH_CUSTOM="$HOME/.config/oh-my-zsh/custom"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting
@@ -184,7 +189,5 @@ cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
 paru -S --noconfirm hyprqt6engine wlogout google-chrome brave-bin
 
 # post install steps
-mv ~/.gnupg ~/.local/share/gnupg
-mv ~/.cargo ~/.local/share/cargo
-rm -rf ~/.bash* ~/.zshrc
+rm -rf ~/.bash*
 exit
