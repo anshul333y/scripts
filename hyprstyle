@@ -26,7 +26,9 @@ fi
 if pgrep -f "Hyprland" >/dev/null; then
   pkill waybar
   pkill hyprpaper
+  pkill -f "foot --server"
   hyprctl dispatch 'hl.dsp.exec_cmd("hyprpaper")'
   hyprctl dispatch 'hl.dsp.exec_cmd("waybar")'
+  hyprctl dispatch 'hl.dsp.exec_cmd("foot --server")'
   hyprctl reload
 fi
