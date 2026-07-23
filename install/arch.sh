@@ -72,10 +72,12 @@ locale-gen
 echo "LANG=en_US.UTF-8" >/etc/locale.conf
 echo "KEYMAP=us" >/etc/vconsole.conf
 
-# configure pacman and mkinitcpio | set hostname | configure hosts file | generate initramfs image
+# configure pacman and mkinitcpio and AllowSuspendThenHibernate | set hostname | configure hosts file | generate initramfs image
 sed -i "s/ParallelDownloads = 5/ParallelDownloads = 13/" /etc/pacman.conf
 sed -i "s/#Color/Color/" /etc/pacman.conf
 sed -i "s/filesystems/sd-encrypt filesystems resume/" /etc/mkinitcpio.conf
+sed -i "s/#HibernateDelaySec=/HibernateDelaySec=20min/" /etc/systemd/sleep.conf
+sed -i "s/#AllowSuspendThenHibernate=yes/AllowSuspendThenHibernate=yes/" /etc/systemd/sleep.conf
 hostname=archlinux
 echo $hostname >/etc/hostname
 echo "127.0.0.1       localhost" >>/etc/hosts
