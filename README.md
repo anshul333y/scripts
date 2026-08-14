@@ -11,9 +11,10 @@ These scripts live in `~/.local/bin` and are installed as part of the dotfiles s
 A fully automated, three-stage Arch Linux installer for an Intel laptop with NVMe storage, with full-disk LUKS2 encryption.
 
 **Stages:**
+
 - **Part 1** (live ISO): Configures pacman, partitions the drive (EFI + root + home + swap), **LUKS2-encrypts root/home/swap** (`cryptsetup luksFormat`), formats and mounts everything, installs the base system via `pacstrap`, and chroots into the new installation.
 - **Part 2** (chroot): Sets timezone (Asia/Kolkata), locale, hostname, sets up keyfile-based auto-unlock for the home/swap LUKS volumes (`/etc/cryptsetup-keys.d`, `/etc/crypttab`) so only the root volume prompts for a password at boot, configures GRUB (including `rd.luks.name=` for the encrypted root), installs the full package set (Hyprland, Waybar, PipeWire, NetworkManager, Bluetooth, Docker, dev tools, etc.), enables systemd services, creates the user, configures autologin via TTY1, sets up GNOME Keyring PAM integration, and installs the udev rule + cron entry for the battery notification scripts.
-- **Part 3** (as user): Clones the `.dots` dotfiles repo and this scripts repo, stows the dotfiles, loads GNOME settings via `dconf`, installs Oh My Zsh with plugins, installs JetBrainsMono **and** Maple Mono Nerd Fonts, builds `paru` from the AUR, and installs a set of AUR packages (`hyprqt6engine`, `wlogout`, `google-chrome`, `brave-bin`).
+- **Part 3** (as user): Clones the `.dots` dotfiles repo and this scripts repo, stows the dotfiles, loads GNOME settings via `dconf`, installs Oh My Zsh with plugins, installs JetBrainsMono **and** Maple Mono Nerd Fonts, builds `yay` from the AUR, and installs a set of AUR packages (`hyprqt6engine`, `wlogout`, `google-chrome`, `brave-bin`).
 
 > **Note:** Hardcoded for `anshul333y` username, `nvme0n1` disk, and Intel GPU. Edit variables at the top of each stage before use.
 >
@@ -41,6 +42,7 @@ bash debian.sh
 A fully automated, three-stage NixOS installer, structurally similar to `arch.sh`.
 
 **Stages:**
+
 - **Part 1** (live ISO): Partitions and formats the drive (`nvme0n1`, hardcoded), clones the `.dots` repo for its flake-based NixOS config, runs `nixos-install --flake`, then chroots in.
 - **Part 2** (chroot): Sets root and user passwords (plaintext placeholders — change before running).
 - **Part 3** (as user): Same dotfiles/Oh My Zsh/font setup as `arch.sh` and `debian.sh`.
@@ -56,7 +58,7 @@ bash nixos.sh
 
 Detects the package manager(s) present and runs a full system update for all of them in sequence.
 
-**Supports:** `apt`, `pacman` + `paru` (AUR), `nixos-rebuild` (flake), `nix profile`, `flatpak`
+**Supports:** `apt`, `pacman` + `yay` (AUR), `nixos-rebuild` (flake), `nix profile`, `flatpak`
 
 ```bash
 update
@@ -147,14 +149,14 @@ Make sure `~/.local/bin` is in your `$PATH`.
 
 ## Dependencies Summary
 
-| Script | Key Dependencies |
-|---|---|
-| `arch.sh` | Run from Arch ISO; uses `cryptsetup` for LUKS2 encryption |
-| `debian.sh` | Run on a fresh Debian/Ubuntu install; `kitty`, Docker, VS Code |
-| `nixos.sh` | Run from NixOS ISO; flake-based config in `.dots` |
-| `update` | `pacman`, `paru`, `apt`, `nix`, `flatpak` (auto-detected) |
-| `hyprstyle` | `pywal` (venv), `swww`, `waybar`, `foot`, patched `hyprctl`, `gsettings` |
-| `wallhaven` | `curl`, `jq`, `nsxiv`, `WALLHAVEN_API_KEY` env var |
-| `connect` | `nmcli`, `bluetoothctl` |
-| `wifi` | `nmcli` |
-| `notify/` | `dash`, `libnotify` or `dunst` (`dunstify`), `brightnessctl`, PipeWire (`wpctl`), `acpi`, `pacman-contrib` |
+| Script      | Key Dependencies                                                                                           |
+| ----------- | ---------------------------------------------------------------------------------------------------------- |
+| `arch.sh`   | Run from Arch ISO; uses `cryptsetup` for LUKS2 encryption                                                  |
+| `debian.sh` | Run on a fresh Debian/Ubuntu install; `kitty`, Docker, VS Code                                             |
+| `nixos.sh`  | Run from NixOS ISO; flake-based config in `.dots`                                                          |
+| `update`    | `pacman`, `yay`, `apt`, `nix`, `flatpak` (auto-detected)                                                   |
+| `hyprstyle` | `pywal` (venv), `swww`, `waybar`, `foot`, patched `hyprctl`, `gsettings`                                   |
+| `wallhaven` | `curl`, `jq`, `nsxiv`, `WALLHAVEN_API_KEY` env var                                                         |
+| `connect`   | `nmcli`, `bluetoothctl`                                                                                    |
+| `wifi`      | `nmcli`                                                                                                    |
+| `notify/`   | `dash`, `libnotify` or `dunst` (`dunstify`), `brightnessctl`, PipeWire (`wpctl`), `acpi`, `pacman-contrib` |

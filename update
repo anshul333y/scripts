@@ -19,7 +19,7 @@ if command -v pacman >/dev/null 2>&1; then
   separator
   sudo pacman -Rsu --noconfirm $(pacman -Qdtq)
   separator
-  paru -Syu --noconfirm
+  yay -Syu --noconfirm
 fi
 
 if command -v nixos-rebuild >/dev/null 2>&1; then

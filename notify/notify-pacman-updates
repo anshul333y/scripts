@@ -1,14 +1,14 @@
 #!/usr/bin/env dash
 
-# Waybar update check script using checkupdates and paru
-# Requires: pacman-contrib, paru
+# Waybar update check script using checkupdates and yay
+# Requires: pacman-contrib, yay
 
 # Get Pacman updates
 PACMAN_UPDATES=$(checkupdates 2>/dev/null)
 PAC_COUNT=$(echo "$PACMAN_UPDATES" | grep -c '^[^[:space:]]')
 
 # Get AUR updates
-AUR_UPDATES=$(paru -Qum --aur 2>/dev/null)
+AUR_UPDATES=$(yay -Qum --aur 2>/dev/null)
 AUR_COUNT=$(echo "$AUR_UPDATES" | grep -c '^[^[:space:]]')
 
 TOTAL_UPDATES=$((PAC_COUNT + AUR_COUNT))
