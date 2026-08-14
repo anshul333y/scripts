@@ -76,14 +76,13 @@ printf '\033c'
 # creating user-dirs | installing dotfiles
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
-mkdir -p ~/.config ~/.cache/zsh ~/.local/state/zsh ~/.local/share/mpd
+mkdir -p ~/.config ~/.cache/zsh ~/.local/state/zsh ~/.local/share/gnupg ~/.local/share/mpd
 git clone https://github.com/anshul333y/.dots.git ~/.dots
 git clone https://github.com/anshul333y/scripts.git ~/.local/bin
 rm -rf ~/.config/user-dirs.dirs && cd ~/.dots && stow --adopt . && cd
 ln -s ~/.config/custom/user.js ~/.config/mozilla/firefox/*.default-release
 echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
 dconf load / <~/.config/custom/gnome.dconf
-powerprofilesctl set performance
 
 # installing oh-my-zsh with plugins
 export ZSH="$HOME/.config/oh-my-zsh"
@@ -103,7 +102,5 @@ curl -Lo ~/dl/font2.zip "https://github.com/subframe7536/maple-font/releases/dow
 python3 -m venv ~/.local/venvs/pywal && source ~/.local/venvs/pywal/bin/activate && pip install pywal
 mv ~/Documents/* ~/docs/ && mv ~/Downloads/* ~/dl/ && mv ~/Music/* ~/music/ && mv ~/Pictures/* ~/pics/ && mv ~/Public/* ~/pub/ && mv ~/Videos/* ~/vids/
 rm -rf ~/Desktop ~/Documents ~/Downloads ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
-mv ~/.gnupg ~/.local/share/gnupg
-mv ~/.cargo ~/.local/share/cargo
-rm -rf ~/.bash* ~/.zshrc
+rm -rf ~/.bash*
 exit

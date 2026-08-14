@@ -78,6 +78,8 @@ sed -i "s/#Color/Color/" /etc/pacman.conf
 sed -i "s/filesystems/sd-encrypt filesystems resume/" /etc/mkinitcpio.conf
 sed -i "s/#HibernateDelaySec=/HibernateDelaySec=20min/" /etc/systemd/sleep.conf
 sed -i "s/#AllowSuspendThenHibernate=yes/AllowSuspendThenHibernate=yes/" /etc/systemd/sleep.conf
+sed -i "s/#HandleLidSwitch=suspend/HandleLidSwitch=suspend-then-hibernate/" /etc/systemd/logind.conf
+sed -i "s/#HandleLidSwitchExternalPower=suspend/HandleLidSwitchExternalPower=suspend-then-hibernate/" /etc/systemd/logind.conf
 hostname=archlinux
 echo $hostname >/etc/hostname
 echo "127.0.0.1       localhost" >>/etc/hosts
@@ -100,7 +102,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 # installing pacman packages | installing flatpak packages | enabling systemd services
 pacman -S --noconfirm reflector cronie dash zsh starship stow 7zip unzip man-db ffmpeg imagemagick \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra zathura zathura-pdf-mupdf \
-  hyprland hyprpaper hypridle hyprlock hyprshot hyprshutdown hyprpolkitagent \
+  hyprland awww hypridle hyprlock hyprshot hyprshutdown hyprpolkitagent \
   hyprland-qt-support nwg-look pavucontrol rofi-wayland waybar dunst gnome-keyring xorg-xrdb \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
   firefox speech-dispatcher flatpak uwsm brightnessctl acpi pacman-contrib python-pywal \
@@ -165,14 +167,13 @@ export ZSH_CUSTOM="$HOME/.config/oh-my-zsh/custom"
 # creating user-dirs | installing dotfiles
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
-mkdir -p ~/.config ~/.cache/zsh ~/.local/state/zsh ~/.local/share/mpd
+mkdir -p ~/.config ~/.cache/zsh ~/.local/state/zsh ~/.local/share/gnupg ~/.local/share/mpd
 git clone https://github.com/anshul333y/.dots.git ~/.dots
 git clone https://github.com/anshul333y/scripts.git ~/.local/bin
 rm -rf ~/.config/user-dirs.dirs && cd ~/.dots && stow --adopt . && cd
 ln -s ~/.config/custom/user.js ~/.config/mozilla/firefox/*.default-release
 echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
 dconf load / <~/.config/custom/gnome.dconf
-powerprofilesctl set performance
 
 # installing oh-my-zsh with plugins
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -185,9 +186,8 @@ git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM
 curl -Lo ~/dl/font1.zip "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
 curl -Lo ~/dl/font2.zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip"
 7z x ~/dl/font1.zip -o$HOME/dl/fonts && 7z x ~/dl/font2.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font1.zip ~/dl/font2.zip
-git clone https://aur.archlinux.org/paru.git ~/dl/paru
-cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
-paru -S --noconfirm hyprqt6engine wlogout google-chrome brave-bin
+git clone https://aur.archlinux.org/paru.git ~/dl/paru && cd ~/dl/paru && makepkg -si --noconfirm && cd && rm -rf ~/dl/paru
+paru -S --noconfirm wlogout google-chrome brave-bin
 
 # post install steps
 rm -rf ~/.bash*

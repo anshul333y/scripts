@@ -59,14 +59,13 @@ printf '\033c'
 # creating user-dirs | installing dotfiles
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
-mkdir -p ~/.config ~/.cache/zsh ~/.local/state/zsh ~/.local/share/mpd
+mkdir -p ~/.config ~/.cache/zsh ~/.local/state/zsh ~/.local/share/gnupg ~/.local/share/mpd
 git clone https://github.com/anshul333y/.dots.git ~/.dots
 git clone https://github.com/anshul333y/scripts.git ~/.local/bin
 rm -rf ~/.config/user-dirs.dirs && cd ~/.dots && stow --adopt . && cd
 ln -s ~/.config/custom/user.js ~/.config/mozilla/firefox/*.default-release
 echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
 dconf load / <~/.config/custom/gnome.dconf
-powerprofilesctl set performance
 
 # installing oh-my-zsh with plugins
 export ZSH="$HOME/.config/oh-my-zsh"
@@ -77,11 +76,11 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}
 git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM}/plugins/zsh-history-substring-search
 git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM}/plugins/you-should-use
 
-# installing font | post install steps
+# installing font
 curl -Lo ~/dl/font1.zip "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
 curl -Lo ~/dl/font2.zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip"
 7z x ~/dl/font1.zip -o$HOME/dl/fonts && 7z x ~/dl/font2.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font1.zip ~/dl/font2.zip
-mv ~/.gnupg ~/.local/share/gnupg
-mv ~/.cargo ~/.local/share/cargo
-rm -rf ~/.bash* ~/.zshrc
+
+# post install steps
+rm -rf ~/.bash*
 exit
