@@ -56,6 +56,13 @@ exit
 #part3
 printf '\033c'
 
+# system configuration variables
+export GNUPGHOME="$HOME/.local/share/gnupg"
+export CARGO_HOME="$HOME/.local/share/cargo"
+export ZDOTDIR="$HOME/.config/zsh"
+export ZSH="$HOME/.config/oh-my-zsh"
+export ZSH_CUSTOM="$HOME/.config/oh-my-zsh/custom"
+
 # creating user-dirs | installing dotfiles
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
@@ -68,8 +75,6 @@ echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | cro
 dconf load / <~/.config/custom/gnome.dconf
 
 # installing oh-my-zsh with plugins
-export ZSH="$HOME/.config/oh-my-zsh"
-export ZSH_CUSTOM="$HOME/.config/oh-my-zsh/custom"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting
