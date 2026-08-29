@@ -124,8 +124,8 @@ dd if=/dev/urandom bs=512 count=1 of=/etc/cryptsetup-keys.d/crypthome.key
 dd if=/dev/urandom bs=512 count=1 of=/etc/cryptsetup-keys.d/cryptswap.key
 chmod 600 /etc/cryptsetup-keys.d/crypthome.key
 chmod 600 /etc/cryptsetup-keys.d/cryptswap.key
-echo "$encrypt_pass" | cryptsetup luksAddKey --batch-mode $home /etc/cryptsetup-keys.d/crypthome.key
-echo "$encrypt_pass" | cryptsetup luksAddKey --batch-mode $swap /etc/cryptsetup-keys.d/cryptswap.key
+echo "$encrypt_pass" | cryptsetup luksAddKey --batch-mode $home /etc/cryptsetup-keys.d/crypthome.key --pbkdf argon2id --iter-time 200 --pbkdf-memory 102400 --pbkdf-parallel 4
+echo "$encrypt_pass" | cryptsetup luksAddKey --batch-mode $swap /etc/cryptsetup-keys.d/cryptswap.key --pbkdf argon2id --iter-time 200 --pbkdf-memory 102400 --pbkdf-parallel 4
 echo "crypthome  UUID=$(blkid -s UUID -o value $home)  /etc/cryptsetup-keys.d/crypthome.key  luks" >>/etc/crypttab
 echo "cryptswap  UUID=$(blkid -s UUID -o value $swap)  /etc/cryptsetup-keys.d/cryptswap.key  luks" >>/etc/crypttab
 
