@@ -187,7 +187,7 @@ curl -Lo ~/dl/font1.zip "https://github.com/ryanoasis/nerd-fonts/releases/latest
 curl -Lo ~/dl/font2.zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip"
 7z x ~/dl/font1.zip -o$HOME/dl/fonts && 7z x ~/dl/font2.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font1.zip ~/dl/font2.zip
 git clone https://aur.archlinux.org/yay-bin.git ~/dl/yay && cd ~/dl/yay && makepkg -si --noconfirm && cd && rm -rf ~/dl/yay
-yay -S --noconfirm wlogout google-chrome brave-bin
+yay -S --noconfirm wlogout google-chrome brave-origin-bin
 
 # post install steps
 rm -rf ~/.bash*
