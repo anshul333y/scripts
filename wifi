@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SSID="DTU-WiFIe"
+SSID="${1:-DTU-WiFIe}"
 INTERVAL=30
 
 while true; do
