@@ -108,7 +108,7 @@ pacman -S --noconfirm reflector cronie dash zsh starship stow 7zip unzip man-db 
   firefox speech-dispatcher flatpak uwsm brightnessctl acpi pacman-contrib python-pywal \
   yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc cava nsxiv rsync fastfetch \
   foot kitty wl-clipboard zoxide eza bat tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd htop btop \
-  base-devel rust bun nodejs npm yarn pnpm pgcli openssh git github-cli podman docker docker-compose
+  openssh git github-cli base-devel rust bun nodejs npm yarn pnpm pgcli docker docker-compose podman obs-studio
 flatpak install -y flathub com.github.wwmm.easyeffects org.telegram.desktop com.discordapp.Discord
 systemctl enable thermald power-profiles-daemon NetworkManager.service bluetooth.service \
   reflector.timer cronie.service
