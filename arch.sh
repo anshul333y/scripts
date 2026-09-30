@@ -29,7 +29,6 @@ echo "$encrypt_pass" | cryptsetup luksOpen --batch-mode $home crypthome
 
 echo "$encrypt_pass" | cryptsetup -q luksFormat --batch-mode --type luks2 $swap
 echo "$encrypt_pass" | cryptsetup luksOpen --batch-mode $swap cryptswap
-cryptsetup luksOpen $swap cryptswap
 mkswap -L swap /dev/mapper/cryptswap
 
 # mount
@@ -101,17 +100,17 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 # installing pacman packages | installing flatpak packages | enabling systemd services
 pacman -S --noconfirm reflector cronie dash zsh starship stow 7zip unzip man-db ffmpeg imagemagick \
-  noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra zathura zathura-pdf-mupdf \
-  hyprland awww hypridle hyprlock hyprshot hyprshutdown hyprpolkitagent \
-  hyprland-qt-support nwg-look pavucontrol rofi-wayland waybar dunst gnome-keyring xorg-xrdb \
+  noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-liberation ttf-dejavu ttf-roboto \
+  hyprland awww hypridle hyprlock hyprshot hyprshutdown hyprpolkitagent hyprland-qt-support \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
+  nwg-look pavucontrol rofi-wayland waybar dunst gnome-keyring xorg-xrdb zathura zathura-pdf-mupdf \
   firefox speech-dispatcher flatpak uwsm brightnessctl acpi pacman-contrib python-pywal \
   yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc cava nsxiv rsync fastfetch \
   foot kitty wl-clipboard zoxide eza bat tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd htop btop \
   openssh git github-cli base-devel rust bun nodejs npm yarn pnpm pgcli docker docker-compose podman obs-studio
-flatpak install -y flathub com.github.wwmm.easyeffects org.telegram.desktop com.discordapp.Discord
-systemctl enable thermald power-profiles-daemon NetworkManager.service bluetooth.service \
-  reflector.timer cronie.service
+flatpak install -y flathub com.github.wwmm.easyeffects
+systemctl enable NetworkManager.service bluetooth.service reflector.timer cronie.service \
+  thermald power-profiles-daemon
 
 # create a new user and add to wheel group | set root and user passwords
 useradd -m -G wheel -s /bin/zsh $username
@@ -187,7 +186,7 @@ curl -Lo ~/dl/font1.zip "https://github.com/ryanoasis/nerd-fonts/releases/latest
 curl -Lo ~/dl/font2.zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip"
 7z x ~/dl/font1.zip -o$HOME/dl/fonts && 7z x ~/dl/font2.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font1.zip ~/dl/font2.zip
 git clone https://aur.archlinux.org/yay-bin.git ~/dl/yay && cd ~/dl/yay && makepkg -si --noconfirm && cd && rm -rf ~/dl/yay
-yay -S --noconfirm wlogout google-chrome brave-origin-bin
+yay -S --noconfirm ttf-symbola wlogout google-chrome brave-origin-bin
 
 # post install steps
 rm -rf ~/.bash*
