@@ -99,7 +99,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # installing pacman packages | installing flatpak packages | enabling systemd services
-pacman -S --noconfirm reflector cronie dash zsh starship stow 7zip unzip man-db ffmpeg imagemagick \
+pacman -S --noconfirm reflector cronie dash zsh starship stow man-db ffmpeg imagemagick 7zip unzip wget curl \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-liberation ttf-dejavu ttf-roboto \
   hyprland awww hypridle hyprlock hyprshot hyprshutdown hyprpolkitagent hyprland-qt-support \
   qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
