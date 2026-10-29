@@ -99,15 +99,14 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # installing pacman packages | installing flatpak packages | enabling systemd services
-pacman -S --noconfirm reflector cronie dash zsh starship stow man-db ffmpeg imagemagick 7zip unzip wget curl \
+pacman -S --noconfirm reflector cronie dash zsh starship stow man-db rsync ffmpeg imagemagick 7zip unzip wget curl \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-liberation ttf-dejavu ttf-roboto \
-  hyprland awww hypridle hyprlock hyprshot hyprshutdown hyprpolkitagent hyprland-qt-support \
-  qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
-  nwg-look pavucontrol rofi-wayland waybar dunst gnome-keyring xorg-xrdb zathura zathura-pdf-mupdf \
-  firefox speech-dispatcher flatpak uwsm brightnessctl acpi pacman-contrib fastfetch htop btop \
-  yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc cava nsxiv rsync \
-  foot kitty wl-clipboard zoxide eza bat tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd \
-  openssh git github-cli base-devel rust bun nodejs npm yarn pnpm pgcli docker docker-compose podman obs-studio
+  hyprland awww hypridle hyprlock hyprshot hyprshutdown hyprpolkitagent hyprland-qt-support qt5-wayland qt6-wayland \
+  xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs uwsm brightnessctl acpi pacman-contrib \
+  nwg-look pavucontrol rofi-wayland waybar dunst gnome-keyring xorg-xrdb zathura zathura-pdf-mupdf obs-studio \
+  firefox speech-dispatcher flatpak fastfetch htop btop yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ nsxiv \
+  foot kitty wl-clipboard zoxide eza bat tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd mpc ncmpcpp rmpc cava \
+  openssh git github-cli base-devel rust bun nodejs npm yarn pnpm pgcli docker docker-compose docker-buildx kind kubectl helm
 flatpak install -y flathub com.github.wwmm.easyeffects
 systemctl enable NetworkManager.service bluetooth.service reflector.timer cronie.service \
   thermald power-profiles-daemon

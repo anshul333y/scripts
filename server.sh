@@ -5,6 +5,7 @@ printf '\033c'
 
 sudo apt install -y zsh stow fzf eza zoxide starship \
   gcc g++ unzip \
+  wl-clipboard \
   nginx nodejs npm
 
 curl -Lo ~/dl/nvim-linux-arm64.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.tar.gz"
