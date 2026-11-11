@@ -11,7 +11,7 @@ sudo apt install -y cronie curl zsh git stow p7zip-full unzip \
   ufw nginx
 sudo systemctl enable cronie.service
 
-# installing neovim | installing docker
+# installing neovim | installing docker | installing k8s
 curl -Lo ~/dl/nvim-linux-arm64.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.tar.gz"
 sudo tar -C /opt -xzf ~/dl/nvim-linux-arm64.tar.gz
 sudo ln -svf /opt/nvim-linux-arm64/bin/nvim /usr/local/bin/nvim
@@ -34,6 +34,37 @@ sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo groupadd docker
 sudo usermod -aG docker $USER
+
+[ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.33.0/kind-linux-arm64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.37/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.37/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubectl
+HELM_BUILDKITE_APT_KEY_ID="DDF78C3E6EBB2D2CC223C95C62BA89D07698DBC6"
+sudo apt-get install curl gpg --yes
+curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey >"${TMPDIR:-/tmp}/helm.asc"
+if [ "$(gpg --import --import-options=show-only --with-colons "${TMPDIR:-/tmp}/helm.asc" |
+  awk -F: '$1 == "fpr" {print $10}' | head -n 1)" != "${HELM_BUILDKITE_APT_KEY_ID}" ]; then
+  echo "ERROR: Unexpected Helm APT key ID: potential key compromise"
+  exit 1
+fi
+sudo rm -f /etc/apt/sources.list.d/helm-stable-debian.list /usr/share/keyrings/helm.gpg
+sudo install -m 0644 -Dt /etc/apt/keyrings/ "${TMPDIR:-/tmp}/helm.asc"
+sudo tee /etc/apt/sources.list.d/helm-stable-debian.sources >/dev/null <<EOF
+Types: deb
+URIs: https://packages.buildkite.com/helm-linux/helm-debian/any/
+Suites: any
+Components: main
+Signed-By: /etc/apt/keyrings/helm.asc
+EOF
+sudo apt-get update
+sudo apt-get install helm
 
 # changing shell to zsh | configure sudo | configure zsh
 chsh -s /usr/bin/zsh

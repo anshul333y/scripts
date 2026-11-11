@@ -9,6 +9,7 @@ boot=/dev/nvme0n1p1
 root=/dev/nvme0n1p2
 home=/dev/nvme0n1p3
 swap=/dev/nvme0n1p4
+username=anshul333y
 
 # configure pacman | update keyring | set keyboard layout to us | enable network time sync
 sed -i "s/ParallelDownloads = 5/ParallelDownloads = 13/" /etc/pacman.conf
@@ -25,7 +26,7 @@ mkfs.ext4 -F -L arch /dev/mapper/cryptroot
 
 # echo "$encrypt_pass" | cryptsetup -q luksFormat --batch-mode --type luks2 $home
 echo "$encrypt_pass" | cryptsetup luksOpen --batch-mode $home crypthome
-# mkfs.ext4 -F -L anshul333y /dev/mapper/crypthome
+# mkfs.ext4 -F -L $username /dev/mapper/crypthome
 
 echo "$encrypt_pass" | cryptsetup -q luksFormat --batch-mode --type luks2 $swap
 echo "$encrypt_pass" | cryptsetup luksOpen --batch-mode $swap cryptswap
@@ -138,7 +139,7 @@ sed -i "s/#HandlePowerKey=poweroff/HandlePowerKey=ignore/" /etc/systemd/logind.c
 mkdir -p /etc/systemd/system/getty@tty1.service.d
 echo "[Service]" >>/etc/systemd/system/getty@tty1.service.d/autologin.conf
 echo "ExecStart=" >>/etc/systemd/system/getty@tty1.service.d/autologin.conf
-echo "ExecStart=-/sbin/agetty --autologin anshul333y --noclear %I $TERM" >>/etc/systemd/system/getty@tty1.service.d/autologin.conf
+echo "ExecStart=-/sbin/agetty --autologin ${username} --noclear %I $TERM" >>/etc/systemd/system/getty@tty1.service.d/autologin.conf
 sed -i "/auth       include      system-local-login/a auth       optional     pam_gnome_keyring.so" /etc/pam.d/login
 sed -i "/session    include      system-local-login/a session    optional     pam_gnome_keyring.so auto_start" /etc/pam.d/login
 echo 'ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", ENV{DISPLAY}=":0", ENV{XAUTHORITY}="/home/anshul333y/.Xauthority" RUN+="/usr/bin/su anshul333y -c '\''/home/anshul333y/.local/bin/notify/notify-battery-charging discharging'\''"' >>/etc/udev/rules.d/power.rules
@@ -190,5 +191,5 @@ git clone https://aur.archlinux.org/yay-bin.git ~/dl/yay && cd ~/dl/yay && makep
 yay -S --noconfirm ttf-symbola python-pywal16 wlogout google-chrome brave-origin-bin
 
 # post install steps
-rm -rf ~/.bashrc
+rm -rf ~/.bashrc ~/.bash_profile ~/.bash_logout
 exit
