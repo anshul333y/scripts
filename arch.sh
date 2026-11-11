@@ -39,8 +39,8 @@ mount /dev/mapper/crypthome /mnt/home
 swapon /dev/mapper/cryptswap
 
 # install base system | generate fstab
-pacstrap -K /mnt base linux linux-headers linux-firmware \
-  grub efibootmgr os-prober intel-ucode mesa vulkan-intel intel-media-driver thermald power-profiles-daemon \
+pacstrap -K /mnt base linux linux-headers linux-firmware grub efibootmgr os-prober \
+  intel-ucode mesa vulkan-intel intel-media-driver thermald power-profiles-daemon \
   networkmanager dhcpcd bluez bluez-utils pipewire pipewire-pulse
 genfstab -U /mnt >>/mnt/etc/fstab
 
@@ -108,8 +108,8 @@ pacman -S --noconfirm reflector cronie dash zsh starship stow man-db rsync ffmpe
   foot kitty wl-clipboard zoxide eza bat tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd mpc ncmpcpp rmpc cava \
   openssh git github-cli base-devel rust bun nodejs npm yarn pnpm pgcli docker docker-compose docker-buildx kind kubectl helm
 flatpak install -y flathub com.github.wwmm.easyeffects
-systemctl enable NetworkManager.service bluetooth.service reflector.timer cronie.service \
-  thermald power-profiles-daemon
+systemctl enable thermald power-profiles-daemon \
+  NetworkManager.service bluetooth.service reflector.timer cronie.service
 
 # create a new user and add to wheel group | set root and user passwords
 useradd -m -G wheel -s /bin/zsh $username
@@ -190,5 +190,5 @@ git clone https://aur.archlinux.org/yay-bin.git ~/dl/yay && cd ~/dl/yay && makep
 yay -S --noconfirm ttf-symbola python-pywal16 wlogout google-chrome brave-origin-bin
 
 # post install steps
-rm -rf ~/.bash*
+rm -rf ~/.bashrc
 exit

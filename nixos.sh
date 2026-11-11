@@ -87,5 +87,5 @@ curl -Lo ~/dl/font2.zip "https://github.com/subframe7536/maple-font/releases/dow
 7z x ~/dl/font1.zip -o$HOME/dl/fonts && 7z x ~/dl/font2.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font1.zip ~/dl/font2.zip
 
 # post install steps
-rm -rf ~/.bash*
+rm -rf ~/.profile ~/.bashrc
 exit

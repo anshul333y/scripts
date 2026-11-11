@@ -9,25 +9,26 @@ sudo sed -i 's/GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=true/' /etc/d
 
 # installing apt packages | installing flatpak packages | enabling systemd services
 sudo apt install -y cronie curl zsh git stow p7zip-full unzip \
-  python3-venv imagemagick \
-  mpv yt-dlp mpd mpc ncmpcpp rsync nsxiv htop btop \
-  flatpak wl-clipboard fzf ripgrep fd-find tmux gcc g++ nodejs npm
+  ffmpeg imagemagick python3-venv mpv yt-dlp mpd mpc ncmpcpp rsync nsxiv htop btop fastfetch \
+  flatpak wl-clipboard eza bat zoxide starship fzf ripgrep fd-find tmux \
+  gcc g++ nodejs npm
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install -y flathub com.github.wwmm.easyeffects org.telegram.desktop com.discordapp.Discord
 sudo systemctl enable cronie.service
 
-# installing kitty | installing starship | installing neovim | installing firefox | installing code | installing docker
+# installing kitty | installing neovim | installing firefox | installing code | installing docker
 curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 sudo ln -svf ~/.local/kitty.app/bin/kitty ~/.local/kitty.app/bin/kitten /usr/local/bin
 cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications/
 sed -i "s|Icon=kitty|Icon=$(readlink -f ~)/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
 sed -i "s|Exec=kitty|Exec=$(readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
 echo 'kitty.desktop' >~/.config/xdg-terminals.list
-curl -sS https://starship.rs/install.sh | sh -s -- -y
+
 curl -Lo ~/dl/nvim-linux-x86_64.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz"
 sudo tar -C /opt -xzf ~/dl/nvim-linux-x86_64.tar.gz
 sudo ln -svf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
 rm ~/dl/nvim-linux-x86_64.tar.gz
+
 sudo apt purge -y firefox-esr
 sudo install -d -m 0755 /etc/apt/keyrings
 wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc >/dev/null
@@ -45,9 +46,11 @@ Pin: origin packages.mozilla.org
 Pin-Priority: 1000
 ' | sudo tee /etc/apt/preferences.d/mozilla
 sudo apt-get update && sudo apt-get install -y firefox
+
 curl -Lo ~/dl/code.deb "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
 sudo apt install -y ~/dl/code.deb
 rm ~/dl/code.deb
+
 sudo apt update
 sudo apt install -y ca-certificates curl
 sudo install -m 0755 -d /etc/apt/keyrings
@@ -107,5 +110,5 @@ curl -Lo ~/dl/font2.zip "https://github.com/subframe7536/maple-font/releases/dow
 python3 -m venv ~/.local/venvs/pywal && source ~/.local/venvs/pywal/bin/activate && pip install pywal
 mv ~/Documents/* ~/docs/ && mv ~/Downloads/* ~/dl/ && mv ~/Music/* ~/music/ && mv ~/Pictures/* ~/pics/ && mv ~/Public/* ~/pub/ && mv ~/Videos/* ~/vids/
 rm -rf ~/Desktop ~/Documents ~/Downloads ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
-rm -rf ~/.bash*
+rm -rf ~/.profile ~/.bashrc
 exit
