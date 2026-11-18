@@ -4,10 +4,14 @@ wifi="${1:-anshul333y}"
 bluetooth=$2
 
 # wifi
-nmcli device wifi rescan
-nmcli -ask device wifi connect $wifi
+if [[ -n $wifi ]]; then
+  nmcli device wifi rescan
+  nmcli -ask device wifi connect $wifi
+fi
 
 # bluetooth
-bluetoothctl scan on
-bluetoothctl trust $bluetooth
-bluetoothctl connect $bluetooth
+if [[ -n $bluetooth ]]; then
+  bluetoothctl scan on
+  bluetoothctl trust $bluetooth
+  bluetoothctl connect $bluetooth
+fi
