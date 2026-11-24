@@ -1,0 +1,3 @@
+#! /usr/bin/env bash
+
+yt-dlp -f bestaudio -x --audio-format best --embed-thumbnail --embed-metadata --download-archive "/home/anshul333y/music/archive.txt" -P "/home/anshul333y/music" $1

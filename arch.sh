@@ -9,6 +9,12 @@ boot=/dev/nvme0n1p1
 root=/dev/nvme0n1p2
 home=/dev/nvme0n1p3
 swap=/dev/nvme0n1p4
+username=anshul333y
+
+# configure reflector
+sed -i "s/5/13/" /etc/xdg/reflector/reflector.conf
+sed -i "s/age/rate/" /etc/xdg/reflector/reflector.conf
+systemctl start reflector.service
 
 # configure pacman | update keyring | set keyboard layout to us | enable network time sync
 sed -i "s/ParallelDownloads = 5/ParallelDownloads = 13/" /etc/pacman.conf
@@ -25,7 +31,7 @@ mkfs.ext4 -F -L arch /dev/mapper/cryptroot
 
 # echo "$encrypt_pass" | cryptsetup -q luksFormat --batch-mode --type luks2 $home
 echo "$encrypt_pass" | cryptsetup luksOpen --batch-mode $home crypthome
-# mkfs.ext4 -F -L anshul333y /dev/mapper/crypthome
+# mkfs.ext4 -F -L $username /dev/mapper/crypthome
 
 echo "$encrypt_pass" | cryptsetup -q luksFormat --batch-mode --type luks2 $swap
 echo "$encrypt_pass" | cryptsetup luksOpen --batch-mode $swap cryptswap
@@ -39,8 +45,8 @@ mount /dev/mapper/crypthome /mnt/home
 swapon /dev/mapper/cryptswap
 
 # install base system | generate fstab
-pacstrap -K /mnt base linux linux-headers linux-firmware \
-  grub efibootmgr os-prober intel-ucode mesa vulkan-intel intel-media-driver thermald power-profiles-daemon \
+pacstrap -K /mnt base linux linux-headers linux-firmware grub efibootmgr os-prober \
+  intel-ucode mesa vulkan-intel intel-media-driver thermald power-profiles-daemon \
   networkmanager dhcpcd bluez bluez-utils pipewire pipewire-pulse
 genfstab -U /mnt >>/mnt/etc/fstab
 
@@ -99,18 +105,17 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # installing pacman packages | installing flatpak packages | enabling systemd services
-pacman -S --noconfirm reflector cronie dash zsh starship stow man-db ffmpeg imagemagick 7zip unzip wget curl \
+pacman -S --noconfirm reflector cronie dash zsh starship stow man-db rsync ffmpeg imagemagick 7zip unzip wget curl \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-liberation ttf-dejavu ttf-roboto \
-  hyprland awww hypridle hyprlock hyprshot hyprshutdown hyprpolkitagent hyprland-qt-support \
-  qt5-wayland qt6-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs \
-  nwg-look pavucontrol rofi-wayland waybar dunst gnome-keyring xorg-xrdb zathura zathura-pdf-mupdf \
-  firefox speech-dispatcher flatpak uwsm brightnessctl acpi pacman-contrib fastfetch htop btop \
-  yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ mpc ncmpcpp rmpc cava nsxiv rsync \
-  foot kitty wl-clipboard zoxide eza bat tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd \
-  openssh git github-cli base-devel rust bun nodejs npm yarn pnpm pgcli docker docker-compose podman obs-studio
+  hyprland awww hypridle hyprlock hyprshot hyprshutdown hyprpolkitagent hyprland-qt-support qt5-wayland qt6-wayland \
+  xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-user-dirs uwsm brightnessctl acpi pacman-contrib \
+  nwg-look pavucontrol rofi-wayland waybar dunst gnome-keyring xorg-xrdb zathura zathura-pdf-mupdf obs-studio \
+  firefox speech-dispatcher flatpak fastfetch htop btop yazi poppler resvg mpv yt-dlp python-mutagen mpd timidity++ nsxiv \
+  foot kitty wl-clipboard zoxide eza bat tmux vim neovim luarocks lazygit fzf ripgrep ast-grep fd mpc ncmpcpp rmpc cava \
+  openssh git github-cli base-devel rust bun nodejs npm yarn pnpm pgcli docker docker-compose docker-buildx kind kubectl helm
 flatpak install -y flathub com.github.wwmm.easyeffects
-systemctl enable NetworkManager.service bluetooth.service reflector.timer cronie.service \
-  thermald power-profiles-daemon
+systemctl enable thermald power-profiles-daemon \
+  NetworkManager.service bluetooth.service reflector.timer cronie.service
 
 # create a new user and add to wheel group | set root and user passwords
 useradd -m -G wheel -s /bin/zsh $username
@@ -139,7 +144,7 @@ sed -i "s/#HandlePowerKey=poweroff/HandlePowerKey=ignore/" /etc/systemd/logind.c
 mkdir -p /etc/systemd/system/getty@tty1.service.d
 echo "[Service]" >>/etc/systemd/system/getty@tty1.service.d/autologin.conf
 echo "ExecStart=" >>/etc/systemd/system/getty@tty1.service.d/autologin.conf
-echo "ExecStart=-/sbin/agetty --autologin anshul333y --noclear %I $TERM" >>/etc/systemd/system/getty@tty1.service.d/autologin.conf
+echo "ExecStart=-/sbin/agetty --autologin ${username} --noclear %I $TERM" >>/etc/systemd/system/getty@tty1.service.d/autologin.conf
 sed -i "/auth       include      system-local-login/a auth       optional     pam_gnome_keyring.so" /etc/pam.d/login
 sed -i "/session    include      system-local-login/a session    optional     pam_gnome_keyring.so auto_start" /etc/pam.d/login
 echo 'ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", ENV{DISPLAY}=":0", ENV{XAUTHORITY}="/home/anshul333y/.Xauthority" RUN+="/usr/bin/su anshul333y -c '\''/home/anshul333y/.local/bin/notify/notify-battery-charging discharging'\''"' >>/etc/udev/rules.d/power.rules
@@ -164,6 +169,7 @@ export CARGO_HOME="$HOME/.local/share/cargo"
 export ZDOTDIR="$HOME/.config/zsh"
 export ZSH="$HOME/.config/oh-my-zsh"
 export ZSH_CUSTOM="$HOME/.config/oh-my-zsh/custom"
+username=anshul333y
 
 # creating user-dirs | installing dotfiles
 cd $HOME
@@ -173,7 +179,14 @@ git clone https://github.com/anshul333y/.dots.git ~/.dots
 git clone https://github.com/anshul333y/scripts.git ~/.local/bin
 rm -rf ~/.config/user-dirs.dirs && cd ~/.dots && stow --adopt . && cd
 ln -s ~/.config/custom/user.js ~/.config/mozilla/firefox/*.default-release
-echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
+(
+  crontab -l 2>/dev/null
+  echo "*/5 * * * * /home/${username}/.local/bin/notify/notify-battery-alert"
+) | crontab -
+(
+  crontab -l 2>/dev/null
+  echo "0 12 * * * /home/${username}/.local/bin/music playlist"
+) | crontab -
 dconf load / <~/.config/custom/gnome.dconf
 
 # installing oh-my-zsh with plugins
@@ -188,8 +201,9 @@ curl -Lo ~/dl/font1.zip "https://github.com/ryanoasis/nerd-fonts/releases/latest
 curl -Lo ~/dl/font2.zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip"
 7z x ~/dl/font1.zip -o$HOME/dl/fonts && 7z x ~/dl/font2.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font1.zip ~/dl/font2.zip
 git clone https://aur.archlinux.org/yay-bin.git ~/dl/yay && cd ~/dl/yay && makepkg -si --noconfirm && cd && rm -rf ~/dl/yay
-yay -S --noconfirm ttf-symbola python-pywal16 wlogout google-chrome brave-origin-bin
+yay -S --noconfirm ttf-symbola python-pywal16 wlogout google-chrome brave-origin-bin microsoft-edge-stable-bin
 
 # post install steps
-rm -rf ~/.bash*
+rm -rf ~/.profile ~/.bashrc ~/.bash_profile ~/.bash_logout ~/.bash_history
+mkdir -p ~/pics/wall && magick -size 800x600 xc:skyblue ~/pics/wall/solid.png
 exit
