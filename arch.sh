@@ -171,7 +171,7 @@ export ZSH="$HOME/.config/oh-my-zsh"
 export ZSH_CUSTOM="$HOME/.config/oh-my-zsh/custom"
 username=anshul333y
 
-# creating user-dirs | installing dotfiles
+# creating user-dirs | installing dotfiles | installing fonts
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
 mkdir -p ~/.config ~/.cache/zsh ~/.local/state/zsh ~/.local/share/gnupg ~/.local/share/mpd
@@ -188,6 +188,8 @@ ln -s ~/.config/custom/user.js ~/.config/mozilla/firefox/*.default-release
   echo "0 12 * * * /home/${username}/.local/bin/music playlist"
 ) | crontab -
 dconf load / <~/.config/custom/gnome.dconf
+git clone https://github.com/anshul333y/fonts.git ~/.local/share/fonts
+fc-cache -fv
 
 # installing oh-my-zsh with plugins
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -196,14 +198,9 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}
 git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM}/plugins/zsh-history-substring-search
 git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM}/plugins/you-should-use
 
-# installing font | installing aur helper yay | installing aur packages
-curl -Lo ~/dl/font1.zip "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
-curl -Lo ~/dl/font2.zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip"
-7z x ~/dl/font1.zip -o$HOME/dl/fonts && 7z x ~/dl/font2.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font1.zip ~/dl/font2.zip
+# post install steps
 git clone https://aur.archlinux.org/yay-bin.git ~/dl/yay && cd ~/dl/yay && makepkg -si --noconfirm && cd && rm -rf ~/dl/yay
 yay -S --noconfirm ttf-symbola python-pywal16 wlogout google-chrome brave-origin-bin microsoft-edge-stable-bin
-
-# post install steps
-rm -rf ~/.profile ~/.bashrc ~/.bash_profile ~/.bash_logout ~/.bash_history
 mkdir -p ~/pics/wall && magick -size 800x600 xc:skyblue ~/pics/wall/solid.png
+rm -rf ~/.profile ~/.bashrc ~/.bash_profile ~/.bash_logout ~/.bash_history
 exit

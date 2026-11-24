@@ -82,8 +82,9 @@ export CARGO_HOME="$HOME/.local/share/cargo"
 export ZDOTDIR="$HOME/.config/zsh"
 export ZSH="$HOME/.config/oh-my-zsh"
 export ZSH_CUSTOM="$HOME/.config/oh-my-zsh/custom"
+username=anshul333y
 
-# creating user-dirs | installing dotfiles
+# creating user-dirs | installing dotfiles | installing fonts
 cd $HOME
 mkdir -p ~/code ~/docs ~/dl ~/music ~/pics ~/pub ~/vids
 mkdir -p ~/.config ~/.cache/zsh ~/.local/state/zsh ~/.local/share/gnupg ~/.local/share/mpd
@@ -91,8 +92,17 @@ git clone https://github.com/anshul333y/.dots.git ~/.dots
 git clone https://github.com/anshul333y/scripts.git ~/.local/bin
 rm -rf ~/.config/user-dirs.dirs && cd ~/.dots && stow --adopt . && cd
 ln -s ~/.config/custom/user.js ~/.config/mozilla/firefox/*.default-release
-echo "*/5 * * * * /home/anshul333y/.local/bin/notify/notify-battery-alert" | crontab -
+(
+  crontab -l 2>/dev/null
+  echo "*/5 * * * * /home/${username}/.local/bin/notify/notify-battery-alert"
+) | crontab -
+(
+  crontab -l 2>/dev/null
+  echo "0 12 * * * /home/${username}/.local/bin/music playlist"
+) | crontab -
 dconf load / <~/.config/custom/gnome.dconf
+git clone https://github.com/anshul333y/fonts.git ~/.local/share/fonts
+fc-cache -fv
 
 # installing oh-my-zsh with plugins
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -100,11 +110,6 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM}/plugins/zsh-history-substring-search
 git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM}/plugins/you-should-use
-
-# installing font
-curl -Lo ~/dl/font1.zip "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
-curl -Lo ~/dl/font2.zip "https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip"
-7z x ~/dl/font1.zip -o$HOME/dl/fonts && 7z x ~/dl/font2.zip -o$HOME/dl/fonts && mv ~/dl/fonts ~/.local/share && fc-cache -fv && rm ~/dl/font1.zip ~/dl/font2.zip
 
 # post install steps
 python3 -m venv ~/.local/venvs/pywal && source ~/.local/venvs/pywal/bin/activate && pip install pywal
